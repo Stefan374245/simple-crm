@@ -4,6 +4,7 @@ import { MatDialogRef, MatDialogModule, MAT_DIALOG_DATA } from '@angular/materia
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-dialog-add-user',
@@ -12,7 +13,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
     MatButtonModule,
     MatInputModule,
     MatFormFieldModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    CommonModule
   ],
   templateUrl: './dialog-add-user.component.html',
   styleUrl: './dialog-add-user.component.scss'
