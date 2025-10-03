@@ -3,6 +3,16 @@
   margin-bottom: 16px;
 }
 
+.form-row {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.half-width {
+  flex: 1;
+}
+
 mat-dialog-content {
   min-width: 400px;
   padding: 20px 0;
@@ -10,8 +20,4 @@ mat-dialog-content {
 
 mat-dialog-actions {
   margin-top: 16px;
-}
-
-.mat-mdc-text-field-wrapper {
-    border-radius: 20px!important;
 }

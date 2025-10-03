@@ -4,7 +4,10 @@ import { MatDialogRef, MatDialogModule, MAT_DIALOG_DATA } from '@angular/materia
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule, provideNativeDateAdapter } from '@angular/material/core';
 import { CommonModule } from '@angular/common';
+
 
 @Component({
   selector: 'app-dialog-add-user',
@@ -13,9 +16,13 @@ import { CommonModule } from '@angular/common';
     MatButtonModule,
     MatInputModule,
     MatFormFieldModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
     ReactiveFormsModule,
-    CommonModule
+    CommonModule,
+    
   ],
+  providers: [provideNativeDateAdapter()],
   templateUrl: './dialog-add-user.component.html',
   styleUrl: './dialog-add-user.component.scss'
 })
@@ -24,7 +31,9 @@ export class DialogAddUserComponent {
     firstName: new FormControl('', [Validators.required]),
     lastName: new FormControl('', [Validators.required]),
     email: new FormControl('', [Validators.required, Validators.email]),
-    phone: new FormControl('')
+    phone: new FormControl(''),
+    birthdate: new FormControl(''),
+    address: new FormControl('')
   });
 
   constructor(
