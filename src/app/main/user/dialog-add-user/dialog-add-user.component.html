@@ -1,4 +1,16 @@
-<h2 mat-dialog-title>Add User</h2>
+<h2 mat-dialog-title>{{ dialogTitle }}</h2>
+
+<div class="progress-container">
+  <div class="progress-info">
+    <span class="progress-text">{{ progressText }}</span>
+    <span class="progress-percentage">{{ progressPercentage }}%</span>
+  </div>
+  <mat-progress-bar 
+    mode="determinate" 
+    [value]="progressPercentage"
+    class="form-progress">
+  </mat-progress-bar>
+</div>
 
 <form #userForm="ngForm">
   <div mat-dialog-content>
@@ -55,8 +67,7 @@
         <input 
           matInput 
           [(ngModel)]="user.zipCode"
-          name="zipCode"
-          type="number">
+          name="zipCode">
       </mat-form-field>
 
       <mat-form-field appearance="outline" class="half-width">
@@ -77,6 +88,6 @@
     color="primary" 
     (click)="onSave()" 
     [disabled]="!userForm.valid">
-    Save
+    {{ editMode ? 'Update' : 'Save' }}
   </button>
 </div>

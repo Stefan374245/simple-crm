@@ -2,3 +2,56 @@
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+// Toast Styles
+.success-toast {
+  background-color: #4caf50 !important;
+  color: white !important;
+  
+  .mat-mdc-snack-bar-label {
+    color: white !important;
+  }
+  
+  .mat-mdc-button {
+    color: white !important;
+  }
+}
+
+.error-toast {
+  background-color: #f44336 !important;
+  color: white !important;
+  
+  .mat-mdc-snack-bar-label {
+    color: white !important;
+  }
+  
+  .mat-mdc-button {
+    color: white !important;
+  }
+}
+
+.info-toast {
+  background-color: #2196f3 !important;
+  color: white !important;
+  
+  .mat-mdc-snack-bar-label {
+    color: white !important;
+  }
+  
+  .mat-mdc-button {
+    color: white !important;
+  }
+}
+
+.warning-toast {
+  background-color: #ff9800 !important;
+  color: white !important;
+  
+  .mat-mdc-snack-bar-label {
+    color: white !important;
+  }
+  
+  .mat-mdc-button {
+    color: white !important;
+  }
+}

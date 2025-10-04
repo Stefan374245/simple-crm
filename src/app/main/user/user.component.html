@@ -1,23 +1,65 @@
+<div class="user-container">
+  <h1>Users</h1>
+
+  <!-- User-Liste anzeigen -->
+  <div class="user-list" *ngIf="users.length > 0">
+    <h2>All Users ({{ users.length }})</h2>
+    <div class="users-grid">
+      <mat-card class="user-card" *ngFor="let user of users">
+        <mat-card-content>
+          <div class="user-content">
+            <div class="user-avatar">
+              <mat-icon>person</mat-icon>
+            </div>
+            <div class="user-info">
+              <h3>{{ user.getFullName() }}</h3>
+              <div class="user-details">
+                <p><strong>Age:</strong> {{ user.getAge() || 'N/A' }}</p>
+                <p><strong>Address:</strong> {{ user.getFullAddress() || 'No address' }}</p>
+              </div>
+            </div>
+          </div>
+        </mat-card-content>
+        <mat-card-actions>
+          <button 
+            mat-button 
+            class="edit-btn"
+            (click)="editUser(user)"
+            matTooltip="Edit user">
+            <mat-icon>edit</mat-icon>
+            Edit
+          </button>
+          <button 
+            mat-button 
+            class="delete-btn"
+            (click)="deleteUser(user)"
+            matTooltip="Delete user">
+            <mat-icon>delete</mat-icon>
+            Delete
+          </button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+  </div>
+
+  <!-- Empty State -->
+  <div class="no-users" *ngIf="users.length === 0">
+    <mat-icon class="empty-icon">people_outline</mat-icon>
+    <h2>No Users Found</h2>
+    <p>Start by adding your first user to see them listed here.</p>
+    <button mat-raised-button class="add-first-user-btn" (click)="openUserDialog()">
+      <mat-icon>add</mat-icon>
+      Add First User
+    </button>
+  </div>
+</div>
+
+<!-- Floating Action Button -->
 <button 
   class="add-user-btn" 
-  mat-fab 
+  mat-fab
   color="primary"
   matTooltip="Add user"
   (click)="openUserDialog()">
   <mat-icon>add</mat-icon>
 </button>
-
-<!-- User-Liste anzeigen -->
-<div class="user-list" *ngIf="users.length > 0">
-  <h2>Users from Firebase ({{ users.length }})</h2>
-  <div class="user-card" *ngFor="let user of users">
-    <h3>{{ user.getFullName() }}</h3>
-    <p><strong>Age:</strong> {{ user.getAge() || 'N/A' }}</p>
-    <p><strong>Address:</strong> {{ user.getFullAddress() || 'No address' }}</p>
-    <hr>
-  </div>
-</div>
-
-<div class="no-users" *ngIf="users.length === 0">
-  <p>No users found. Add your first user!</p>
-</div>

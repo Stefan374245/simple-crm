@@ -21,3 +21,40 @@ mat-dialog-content {
 mat-dialog-actions {
   margin-top: 16px;
 }
+
+.progress-container {
+  padding: 0 24px 16px 24px;
+  margin-bottom: 8px;
+  
+  .progress-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+    
+    .progress-text {
+      font-size: 0.875rem;
+      color: rgba(0, 0, 0, 0.6);
+      font-weight: 400;
+    }
+    
+    .progress-percentage {
+      font-size: 0.875rem;
+      color: #673ab7;
+      font-weight: 500;
+    }
+  }
+  
+  .form-progress {
+    height: 6px;
+    border-radius: 3px;
+    
+    ::ng-deep .mat-mdc-progress-bar-buffer {
+      background-color: rgba(103, 58, 183, 0.1);
+    }
+    
+    ::ng-deep .mat-mdc-progress-bar-fill::after {
+      background-color: #673ab7;
+    }
+  }
+}

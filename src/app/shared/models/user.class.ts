@@ -56,6 +56,14 @@ export class User {
 
   // ✅ Korrigierte fromFirebase Methode
   static fromFirebase(id: string, data: any): User {
-    return new User({ ...data, id });
+    return new User({
+      id: id,
+      firstName: data.firstName || '',
+      lastName: data.lastName || '',
+      birthdate: data.birthdate ? new Date(data.birthdate) : undefined,
+      street: data.street || '',
+      zipCode: data.zipCode || '',
+      city: data.city || ''
+    });
   }
 }
