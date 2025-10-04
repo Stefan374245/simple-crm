@@ -1,3 +1,23 @@
-<button mat-fab class="add-user-fab" (click)="openUserDialog()" matTooltip="Add User" matTooltipPosition="above">
+<button 
+  class="add-user-btn" 
+  mat-fab 
+  color="primary"
+  matTooltip="Add user"
+  (click)="openUserDialog()">
   <mat-icon>add</mat-icon>
 </button>
+
+<!-- User-Liste anzeigen -->
+<div class="user-list" *ngIf="users.length > 0">
+  <h2>Users from Firebase ({{ users.length }})</h2>
+  <div class="user-card" *ngFor="let user of users">
+    <h3>{{ user.getFullName() }}</h3>
+    <p><strong>Age:</strong> {{ user.getAge() || 'N/A' }}</p>
+    <p><strong>Address:</strong> {{ user.getFullAddress() || 'No address' }}</p>
+    <hr>
+  </div>
+</div>
+
+<div class="no-users" *ngIf="users.length === 0">
+  <p>No users found. Add your first user!</p>
+</div>

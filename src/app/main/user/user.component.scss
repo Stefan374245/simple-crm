@@ -1,6 +1,48 @@
-.add-user-fab {
+.add-user-btn {
   position: fixed;
-  bottom: 20px;
-  right: 20px;
-  z-index: 1000;
+  bottom: 56px;
+  right: 56px;
+  z-index: 100;
+}
+
+.user-list {
+  padding: 20px;
+  max-width: 800px;
+  margin: 0 auto;
+
+  h2 {
+    color: #1976d2;
+    margin-bottom: 20px;
+  }
+}
+
+.user-card {
+  background: white;
+  padding: 16px;
+  margin-bottom: 16px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+
+  h3 {
+    margin: 0 0 8px 0;
+    color: #333;
+  }
+
+  p {
+    margin: 4px 0;
+    color: #666;
+  }
+
+  hr {
+    border: none;
+    border-top: 1px solid #eee;
+    margin: 12px 0 0 0;
+  }
+}
+
+.no-users {
+  text-align: center;
+  padding: 40px;
+  color: #666;
+  font-style: italic;
 }

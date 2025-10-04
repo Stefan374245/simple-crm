@@ -1,5 +1,4 @@
 import { Component, Inject } from '@angular/core';
-import { FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { MatDialogRef, MatDialogModule, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
@@ -7,7 +6,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule, provideNativeDateAdapter } from '@angular/material/core';
 import { CommonModule } from '@angular/common';
-
+import { FormsModule } from '@angular/forms'; // Geändert!
+import { User } from '../../../shared/models/user.class';
 
 @Component({
   selector: 'app-dialog-add-user',
@@ -18,23 +18,15 @@ import { CommonModule } from '@angular/common';
     MatFormFieldModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    ReactiveFormsModule,
+    FormsModule, // Geändert von ReactiveFormsModule!
     CommonModule,
-    
   ],
   providers: [provideNativeDateAdapter()],
   templateUrl: './dialog-add-user.component.html',
   styleUrl: './dialog-add-user.component.scss'
 })
 export class DialogAddUserComponent {
-  userForm = new FormGroup({
-    firstName: new FormControl('', [Validators.required]),
-    lastName: new FormControl('', [Validators.required]),
-    email: new FormControl('', [Validators.required, Validators.email]),
-    phone: new FormControl(''),
-    birthdate: new FormControl(''),
-    address: new FormControl('')
-  });
+  user = new User(); // Direkte User-Instanz statt FormGroup!
 
   constructor(
     public dialogRef: MatDialogRef<DialogAddUserComponent>,
@@ -46,8 +38,9 @@ export class DialogAddUserComponent {
   }
 
   onSave(): void {
-    if (this.userForm.valid) {
-      this.dialogRef.close(this.userForm.value);
+    // Einfache Validierung
+    if (this.user.firstName && this.user.lastName) {
+      this.dialogRef.close(this.user);
     }
   }
 }
