@@ -1,44 +1,109 @@
-<h2 mat-dialog-title>Add User</h2>
+<h2 mat-dialog-title>{{ dialogTitle }}</h2>
 
-<form [formGroup]="userForm">
+<div class="progress-container">
+  <div class="progress-info">
+    <span class="progress-text">{{ progressText }}</span>
+    <span class="progress-percentage">{{ progressPercentage }}%</span>
+  </div>
+  <mat-progress-bar
+    mode="determinate"
+    [value]="progressPercentage"
+    class="form-progress"
+  >
+  </mat-progress-bar>
+</div>
+
+<form #userForm="ngForm">
   <div mat-dialog-content>
-    <mat-form-field appearance="outline" class="full-width">
-      <mat-label>First Name</mat-label>
-      <input matInput formControlName="firstName" required>
-      <mat-error *ngIf="userForm.get('firstName')?.hasError('required')">
-        First name is required
-      </mat-error>
-    </mat-form-field>
+    <div class="form-row">
+      <mat-form-field appearance="outline" class="half-width">
+        <mat-label>First Name</mat-label>
+        <input
+          matInput
+          [(ngModel)]="user.firstName"
+          name="firstName"
+          required
+          #firstName="ngModel"
+        />
+        <mat-error *ngIf="firstName.invalid && firstName.touched">
+          First name is required
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="half-width">
+        <mat-label>Last Name</mat-label>
+        <input
+          matInput
+          [(ngModel)]="user.lastName"
+          name="lastName"
+          required
+          #lastName="ngModel"
+        />
+        <mat-error *ngIf="lastName.invalid && lastName.touched">
+          Last name is required
+        </mat-error>
+      </mat-form-field>
+    </div>
 
     <mat-form-field appearance="outline" class="full-width">
-      <mat-label>Last Name</mat-label>
-      <input matInput formControlName="lastName" required>
-      <mat-error *ngIf="userForm.get('lastName')?.hasError('required')">
-        Last name is required
-      </mat-error>
+      <mat-label>Birth Date</mat-label>
+      <input
+        matInput
+        [matDatepicker]="picker"
+        [(ngModel)]="user.birthDate"
+        name="birthDate"
+      />
+      <mat-datepicker-toggle
+        matIconSuffix
+        [for]="picker"
+      ></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
     </mat-form-field>
 
     <mat-form-field appearance="outline" class="full-width">
       <mat-label>Email</mat-label>
-      <input matInput formControlName="email" type="email" required>
-      <mat-error *ngIf="userForm.get('email')?.hasError('required')">
-        Email is required
-      </mat-error>
-      <mat-error *ngIf="userForm.get('email')?.hasError('email')">
-        Invalid email address
+      <input
+        matInput
+        type="email"
+        [(ngModel)]="user.email"
+        name="email"
+        required
+        email
+        #email="ngModel"
+      />
+      <mat-error *ngIf="email.invalid && email.touched">
+        <span *ngIf="email.errors?.['required']">Email is required</span>
+        <span *ngIf="email.errors?.['email']">Enter a valid email</span>
       </mat-error>
     </mat-form-field>
 
     <mat-form-field appearance="outline" class="full-width">
-      <mat-label>Phone</mat-label>
-      <input matInput formControlName="phone">
+      <mat-label>Street + House No.</mat-label>
+      <input matInput [(ngModel)]="user.street" name="street" />
     </mat-form-field>
+
+    <div class="form-row">
+      <mat-form-field appearance="outline" class="half-width">
+        <mat-label>Zip code</mat-label>
+        <input matInput [(ngModel)]="user.zipCode" name="zipCode" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="half-width">
+        <mat-label>City</mat-label>
+        <input matInput [(ngModel)]="user.city" name="city" />
+      </mat-form-field>
+    </div>
   </div>
 </form>
 
 <div mat-dialog-actions align="end">
   <button mat-button (click)="onCancel()">Cancel</button>
-  <button mat-raised-button color="primary" (click)="onSave()" [disabled]="!userForm.valid">
-    Save
+  <button
+    mat-raised-button
+    color="primary"
+    (click)="onSave()"
+    [disabled]="!userForm.valid"
+  >
+    {{ editMode ? "Update" : "Save" }}
   </button>
 </div>

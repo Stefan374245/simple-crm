@@ -1,1 +1,238 @@
-<p>dashboard works!</p>
+<div class="dashboard-container">
+  <div class="dashboard-header">
+    <h1>Dashboard</h1>
+    <p class="dashboard-subtitle">Welcome to your CRM overview</p>
+  </div>
+  
+  <!-- Loading State -->
+  <div class="loading-state" *ngIf="isLoading">
+    <mat-card class="loading-card">
+      <mat-card-content>
+        <div class="loading-content">
+          <mat-icon class="loading-icon">hourglass_empty</mat-icon>
+          <h2>Loading Dashboard...</h2>
+          <p>Please wait while we gather your data</p>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <!-- Dashboard Content -->
+  <div class="dashboard-content" *ngIf="!isLoading">
+    <!-- Statistics Grid -->
+    <div class="stats-section">
+      <h2 class="section-title">
+        <mat-icon>analytics</mat-icon>
+        Statistics Overview
+      </h2>
+      
+      <div class="stats-grid">
+        <!-- Total Users Card -->
+        <mat-card class="stat-card primary-card" matTooltip="Total number of users in your CRM">
+          <mat-card-content>
+            <div class="stat-content">
+              <div class="stat-icon users">
+                <mat-icon>people</mat-icon>
+              </div>
+              <div class="stat-info">
+                <h3>{{ totalUsers }}</h3>
+                <p>Total Users</p>
+                <span class="stat-change positive" *ngIf="totalUsers > 0">
+                  <mat-icon>trending_up</mat-icon>
+                  Active
+                </span>
+              </div>
+            </div>
+          </mat-card-content>
+          <mat-card-actions>
+            <button mat-button routerLink="/user" color="primary">
+              <mat-icon>visibility</mat-icon>
+              View All
+            </button>
+          </mat-card-actions>
+        </mat-card>
+
+        <!-- Average Age Card -->
+        <mat-card class="stat-card success-card" matTooltip="Average age of all users">
+          <mat-card-content>
+            <div class="stat-content">
+              <div class="stat-icon age">
+                <mat-icon>cake</mat-icon>
+              </div>
+              <div class="stat-info">
+                <h3>{{ averageAge }}</h3>
+                <p>Average Age</p>
+                <span class="stat-change" *ngIf="averageAge > 0">
+                  Years old
+                </span>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+
+        <!-- Users This Month Card -->
+        <mat-card class="stat-card warning-card" matTooltip="Users with birthdays this month">
+          <mat-card-content>
+            <div class="stat-content">
+              <div class="stat-icon birthday">
+                <mat-icon>today</mat-icon>
+              </div>
+              <div class="stat-info">
+                <h3>{{ usersThisMonth }}</h3>
+                <p>Birthdays This Month</p>
+                <span class="stat-change" *ngIf="usersThisMonth > 0">
+                  <mat-icon>celebration</mat-icon>
+                  Celebrations
+                </span>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+
+        <!-- Growth Card -->
+        <mat-card class="stat-card accent-card" matTooltip="Recent user activity">
+          <mat-card-content>
+            <div class="stat-content">
+              <div class="stat-icon growth">
+                <mat-icon>trending_up</mat-icon>
+              </div>
+              <div class="stat-info">
+                <h3>+{{ recentUsers.length }}</h3>
+                <p>Recent Activity</p>
+                <span class="stat-change positive" *ngIf="recentUsers.length > 0">
+                  <mat-icon>add_circle</mat-icon>
+                  Growing
+                </span>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+
+    <!-- Recent Users Section -->
+    <div class="recent-section" *ngIf="recentUsers.length > 0">
+      <h2 class="section-title">
+        <mat-icon>history</mat-icon>
+        Recent Users
+      </h2>
+      
+      <div class="recent-users-grid">
+        <mat-card class="user-preview-card" *ngFor="let user of recentUsers; trackBy: trackByUserId">
+          <mat-card-content>
+            <div class="user-preview-content">
+              <div class="user-avatar-container">
+                <div class="user-avatar">
+                  {{ getUserInitials(user) }}
+                </div>
+                <div class="user-status online"></div>
+              </div>
+              <div class="user-details">
+                <h4>{{ user.getFullName() }}</h4>
+                <p class="user-age">
+                  <mat-icon>cake</mat-icon>
+                  {{ user.getAge() ? user.getAge() + ' years old' : 'Age unknown' }}
+                </p>
+                <p class="user-address" *ngIf="user.getFullAddress()">
+                  <mat-icon>location_on</mat-icon>
+                  {{ user.getFullAddress() }}
+                </p>
+                <p class="user-address" *ngIf="!user.getFullAddress()">
+                  <mat-icon>location_off</mat-icon>
+                  No address provided
+                </p>
+              </div>
+            </div>
+          </mat-card-content>
+          <mat-card-actions>
+            <button mat-button color="primary" routerLink="/user">
+              <mat-icon>visibility</mat-icon>
+              View Profile
+            </button>
+          </mat-card-actions>
+        </mat-card>
+      </div>
+    </div>
+
+    <!-- Quick Actions Section -->
+    <div class="quick-actions-section">
+      <h2 class="section-title">
+        <mat-icon>flash_on</mat-icon>
+        Quick Actions
+      </h2>
+      
+      <div class="action-cards-grid">
+        <mat-card class="action-card" matTooltip="Manage all users in your CRM">
+          <mat-card-content>
+            <div class="action-content">
+              <mat-icon class="action-icon">people</mat-icon>
+              <h3>Manage Users</h3>
+              <p>View, add, edit, or delete users in your CRM system</p>
+            </div>
+          </mat-card-content>
+          <mat-card-actions>
+            <button mat-raised-button color="primary" routerLink="/user">
+              <mat-icon>arrow_forward</mat-icon>
+              Go to Users
+            </button>
+          </mat-card-actions>
+        </mat-card>
+
+        <mat-card class="action-card" matTooltip="Generate reports and analytics">
+          <mat-card-content>
+            <div class="action-content">
+              <mat-icon class="action-icon">analytics</mat-icon>
+              <h3>View Reports</h3>
+              <p>Generate detailed reports and view analytics data</p>
+            </div>
+          </mat-card-content>
+          <mat-card-actions>
+            <button mat-raised-button color="accent" disabled>
+              <mat-icon>arrow_forward</mat-icon>
+              Coming Soon
+            </button>
+          </mat-card-actions>
+        </mat-card>
+
+        <mat-card class="action-card" matTooltip="Configure system settings">
+          <mat-card-content>
+            <div class="action-content">
+              <mat-icon class="action-icon">settings</mat-icon>
+              <h3>Settings</h3>
+              <p>Customize your CRM preferences and configurations</p>
+            </div>
+          </mat-card-content>
+          <mat-card-actions>
+            <button mat-raised-button disabled>
+              <mat-icon>arrow_forward</mat-icon>
+              Coming Soon
+            </button>
+          </mat-card-actions>
+        </mat-card>
+      </div>
+    </div>
+
+    <!-- Empty State -->
+    <div class="empty-state" *ngIf="totalUsers === 0">
+      <mat-card class="empty-state-card">
+        <mat-card-content>
+          <div class="empty-content">
+            <mat-icon class="empty-icon">people_outline</mat-icon>
+            <h2>Welcome to your CRM!</h2>
+            <p>Your dashboard is ready, but you haven't added any users yet. Start building your customer database today!</p>
+            <div class="empty-actions">
+              <button mat-raised-button color="primary" routerLink="/user" class="primary-action">
+                <mat-icon>add</mat-icon>
+                Add Your First User
+              </button>
+              <button mat-button color="accent">
+                <mat-icon>help_outline</mat-icon>
+                Learn More
+              </button>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</div>

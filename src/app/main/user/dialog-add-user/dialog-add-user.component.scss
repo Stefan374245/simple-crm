@@ -1,6 +1,49 @@
+@import '../../../shared/mixin/index.scss';
+
+:host ::ng-deep {
+  .mat-mdc-dialog-container {
+    background: rgba(30, 30, 30, 0.95);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: $text-primary;
+  }
+  
+  .mat-mdc-dialog-title {
+    color: $text-primary;
+  }
+  
+  .mat-mdc-form-field {
+    .mat-mdc-form-field-label {
+      color: $text-secondary;
+    }
+    
+    .mat-mdc-input-element {
+      color: $text-primary;
+    }
+    
+    .mat-mdc-form-field-outline {
+      color: rgba(255, 255, 255, 0.23);
+    }
+    
+    &.mat-focused .mat-mdc-form-field-outline {
+      color: $primary-color;
+    }
+  }
+}
+
 .full-width {
   width: 100%;
   margin-bottom: 16px;
+}
+
+.form-row {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.half-width {
+  flex: 1;
 }
 
 mat-dialog-content {
@@ -10,8 +53,68 @@ mat-dialog-content {
 
 mat-dialog-actions {
   margin-top: 16px;
+  border-top: 1px solid $text-divider;
+  padding-top: $spacing-md;
+  
+  button {
+    &[mat-button] {
+      color: $text-secondary;
+      
+      &:hover {
+        background: rgba(255, 255, 255, 0.05);
+      }
+    }
+    
+    &[mat-raised-button] {
+      background: linear-gradient(135deg, $primary-color, $primary-light);
+      color: $text-primary;
+      
+      &:hover {
+        background: linear-gradient(135deg, $primary-light, $primary-color);
+      }
+      
+      &:disabled {
+        background: rgba(255, 255, 255, 0.12);
+        color: $text-disabled;
+      }
+    }
+  }
 }
 
-.mat-mdc-text-field-wrapper {
-    border-radius: 20px!important;
+.progress-container {
+  padding: 0 24px 16px 24px;
+  margin-bottom: 8px;
+  
+  .progress-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+    
+    .progress-text {
+      font-size: 0.875rem;
+      color: $text-secondary;
+      font-weight: 400;
+    }
+    
+    .progress-percentage {
+      font-size: 0.875rem;
+      color: $primary-color;
+      font-weight: 500;
+    }
+  }
+  
+  .form-progress {
+    height: 6px;
+    border-radius: 3px;
+    background: rgba(255, 255, 255, 0.1);
+    
+    ::ng-deep .mat-mdc-progress-bar-buffer {
+      background-color: rgba(255, 255, 255, 0.05);
+    }
+    
+    ::ng-deep .mat-mdc-progress-bar-fill::after {
+      background: linear-gradient(90deg, $primary-color, $primary-light);
+    }
+  }
 }
