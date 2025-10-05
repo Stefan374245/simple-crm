@@ -43,8 +43,8 @@ export class DialogAddUserComponent implements OnInit {
       this.editMode = true;
       this.dialogTitle = 'Edit User';
       
-      // ✅ User-Objekt direkt verwenden, nicht neu erstellen
-      this.user = this.data.user;
+      // ✅ Neue User-Instanz erstellen um Referenz-Probleme zu vermeiden
+      this.user = new User(this.data.user.toJSON());
       
       console.log('Edit mode - loaded user:', this.user);
     }
@@ -54,12 +54,13 @@ export class DialogAddUserComponent implements OnInit {
     let filledFields = 0;
     const totalFields = 6;
 
-    if (this.user.firstName && this.user.firstName.trim()) filledFields++;
-    if (this.user.lastName && this.user.lastName.trim()) filledFields++;
-    if (this.user.birthdate) filledFields++;
-    if (this.user.street && this.user.street.trim()) filledFields++;
-    if (this.user.zipCode && this.user.zipCode.trim()) filledFields++;
-    if (this.user.city && this.user.city.trim()) filledFields++;
+    // ✅ Sichere String-Prüfung mit Optional Chaining
+    if (this.user.firstName?.trim()) filledFields++;
+    if (this.user.lastName?.trim()) filledFields++;
+    if (this.user.birthDate) filledFields++;
+    if (this.user.street?.trim()) filledFields++;
+    if (this.user.zipCode?.trim()) filledFields++;
+    if (this.user.city?.trim()) filledFields++;
 
     return Math.round((filledFields / totalFields) * 100);
   }
@@ -71,12 +72,13 @@ export class DialogAddUserComponent implements OnInit {
 
   private getFilledFieldsCount(): number {
     let count = 0;
-    if (this.user.firstName && this.user.firstName.trim()) count++;
-    if (this.user.lastName && this.user.lastName.trim()) count++;
-    if (this.user.birthdate) count++;
-    if (this.user.street && this.user.street.trim()) count++;
-    if (this.user.zipCode && this.user.zipCode.trim()) count++;
-    if (this.user.city && this.user.city.trim()) count++;
+    // ✅ Sichere String-Prüfung mit Optional Chaining
+    if (this.user.firstName?.trim()) count++;
+    if (this.user.lastName?.trim()) count++;
+    if (this.user.birthDate) count++;
+    if (this.user.street?.trim()) count++;
+    if (this.user.zipCode?.trim()) count++;
+    if (this.user.city?.trim()) count++;
     return count;
   }
 
@@ -84,9 +86,9 @@ export class DialogAddUserComponent implements OnInit {
     this.dialogRef.close();
   }
 
-  // ✅ Direktes Speichern ohne Confirm Dialog
   onSave(): void {
-    if (this.user.firstName && this.user.lastName) {
+    // ✅ Sichere Validierung
+    if (this.user.firstName?.trim() && this.user.lastName?.trim()) {
       this.dialogRef.close(this.user);
     }
   }

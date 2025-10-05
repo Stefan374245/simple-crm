@@ -87,8 +87,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
     const currentYear = new Date().getFullYear();
     
     this.usersThisMonth = users.filter(user => {
-      if (!user.birthdate) return false;
-      const userDate = new Date(user.birthdate);
+      if (!user.birthDate) return false;
+      const userDate = new Date(user.birthDate);
       return userDate.getMonth() === currentMonth && userDate.getFullYear() === currentYear;
     }).length;
   }
@@ -98,8 +98,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
     oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
     
     this.usersThisWeek = users.filter(user => {
-      if (!user.birthdate) return false;
-      const userDate = new Date(user.birthdate);
+      if (!user.birthDate) return false;
+      const userDate = new Date(user.birthDate);
       return userDate >= oneWeekAgo;
     }).length;
   }

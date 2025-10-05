@@ -7,7 +7,7 @@ import { User } from '../models/user.class';
   providedIn: 'root'
 })
 export class UserService {
-  private firestore = inject(Firestore); // ✅ Bessere Injection
+  private firestore = inject(Firestore);
 
   constructor() {}
 
@@ -21,7 +21,7 @@ export class UserService {
         }),
         catchError(error => {
           console.error('Error fetching users:', error);
-          return of([]); // Return empty array on error
+          return of([]);
         })
       );
     } catch (error) {
@@ -33,15 +33,8 @@ export class UserService {
   async addUser(user: User): Promise<string> {
     try {
       const usersCollection = collection(this.firestore, 'users');
-      
-      const userData = {
-        firstName: user.firstName,
-        lastName: user.lastName,
-        birthdate: user.birthdate?.toISOString() || null,
-        street: user.street || null,
-        zipCode: user.zipCode || null,
-        city: user.city || null
-      };
+      // ✅ toFirebaseData() verwenden (ohne ID)
+      const userData = user.toFirebaseData();
       
       console.log('Adding user data:', userData);
       const docRef = await addDoc(usersCollection, userData);
@@ -55,14 +48,10 @@ export class UserService {
   async updateUser(id: string, user: User): Promise<void> {
     try {
       const userDoc = doc(this.firestore, 'users', id);
-      const userData = {
-        firstName: user.firstName,
-        lastName: user.lastName,
-        birthdate: user.birthdate?.toISOString() || null,
-        street: user.street || null,
-        zipCode: user.zipCode || null,
-        city: user.city || null
-      };
+      // ✅ toFirebaseData() verwenden
+      const userData = user.toFirebaseData();
+      
+      console.log('Updating user with data:', userData);
       await updateDoc(userDoc, userData);
     } catch (error) {
       console.error('Error updating user:', error);

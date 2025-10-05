@@ -37,7 +37,6 @@ export class UserComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    // User-Liste aus Firebase laden
     this.subscription.add(
       this.userService.getAllUsers().subscribe((users) => {
         this.users = users;
@@ -59,7 +58,6 @@ export class UserComponent implements OnInit, OnDestroy {
       if (result) {
         console.log('Neuer User erstellt:', result);
 
-        // User zu Firebase hinzufügen
         this.userService
           .addUser(result)
           .then((id) => {
@@ -86,7 +84,6 @@ export class UserComponent implements OnInit, OnDestroy {
       if (result && user.id) {
         console.log('User bearbeitet:', result);
 
-        // User in Firebase aktualisieren
         this.userService
           .updateUser(user.id, result)
           .then(() => {
@@ -108,7 +105,6 @@ export class UserComponent implements OnInit, OnDestroy {
   deleteUser(user: User): void {
     if (!user.id) return;
 
-    // Schöner Bestätigungs-Dialog statt alert()
     this.confirmDialog
       .confirmDelete(user.getFullName())
       .subscribe((confirmed) => {
@@ -132,8 +128,6 @@ export class UserComponent implements OnInit, OnDestroy {
   }
 
   getUserInitials(user: User): string {
-    const firstName = user.firstName || '';
-    const lastName = user.lastName || '';
-    return (firstName.charAt(0) + lastName.charAt(0)).toUpperCase() || 'UN';
+    return user.getInitials();
   }
 }
