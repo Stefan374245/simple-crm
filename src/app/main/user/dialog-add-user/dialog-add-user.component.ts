@@ -52,46 +52,42 @@ export class DialogAddUserComponent implements OnInit {
       console.log('Converted user:', this.user);
       console.log('ZipCode converted:', this.user.zipCode, 'Type:', typeof this.user.zipCode);
       
-      // ✅ FALLBACK: Alle String-Felder explizit zu Strings konvertieren
+    
       this.sanitizeUserData();
     }
   }
 
-  // ✅ Alle Properties zu sauberen Strings konvertieren
-  private sanitizeUserData(): void {
-    this.user.firstName = this.toSafeString(this.user.firstName);
-    this.user.lastName = this.toSafeString(this.user.lastName);
-    this.user.street = this.toSafeString(this.user.street);
-    this.user.zipCode = this.toSafeString(this.user.zipCode);
-    this.user.city = this.toSafeString(this.user.city);
-    
-    console.log('After sanitization:', {
-      firstName: `"${this.user.firstName}" (${typeof this.user.firstName})`,
-      lastName: `"${this.user.lastName}" (${typeof this.user.lastName})`,
-      street: `"${this.user.street}" (${typeof this.user.street})`,
-      zipCode: `"${this.user.zipCode}" (${typeof this.user.zipCode})`,
-      city: `"${this.user.city}" (${typeof this.user.city})`
-    });
-  }
 
-  // ✅ Sichere String-Konvertierung
+  private sanitizeUserData(): void {
+  this.user.firstName = this.toSafeString(this.user.firstName);
+  this.user.lastName = this.toSafeString(this.user.lastName);
+  this.user.email = this.toSafeString(this.user.email);
+  this.user.street = this.toSafeString(this.user.street);
+  this.user.zipCode = this.toSafeString(this.user.zipCode);
+  this.user.city = this.toSafeString(this.user.city);
+  
+  console.log('After sanitization:', {
+    firstName: `"${this.user.firstName}" (${typeof this.user.firstName})`,
+    lastName: `"${this.user.lastName}" (${typeof this.user.lastName})`,
+    email: `"${this.user.email}" (${typeof this.user.email})`,
+    zipCode: `"${this.user.zipCode}" (${typeof this.user.zipCode})`,
+    city: `"${this.user.city}" (${typeof this.user.city})`
+  });
+}
+
   private toSafeString(value: any): string {
     if (value === null || value === undefined) {
       return '';
     }
-    
-    // Wenn es bereits ein String ist, zurückgeben
+
     if (typeof value === 'string') {
       return value;
     }
-    
-    // Alles andere zu String konvertieren
+
     return String(value);
   }
 
-  // ✅ Sichere String-Validierung
   private hasValidString(value: any): boolean {
-    // Erst zu String konvertieren, dann prüfen
     const stringValue = this.toSafeString(value);
     return stringValue.trim().length > 0;
   }
