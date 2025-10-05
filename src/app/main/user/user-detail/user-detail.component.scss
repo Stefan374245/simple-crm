@@ -1,0 +1,436 @@
+@import '../../../shared/mixin/index';
+
+.user-detail-container {
+  padding: $spacing-xxl 0;
+  max-width: 1200px;
+  margin: 0 auto;
+  background: linear-gradient(135deg, #1e1e1e 0%, #2d2d2d 100%);
+  min-height: calc(100vh - 120px);
+  color: $text-primary;
+}
+
+// Header Section
+.detail-header {
+  display: flex;
+  align-items: center;
+  gap: $spacing-md;
+  margin-bottom: $spacing-xl;
+  padding: $spacing-md 0;
+  border-bottom: 1px solid $text-divider;
+
+  h1 {
+    flex: 1;
+    margin: 0;
+    color: $text-primary;
+    font-size: 2.125rem;
+    font-weight: 400;
+    font-family: "Roboto", "Helvetica Neue", sans-serif;
+    letter-spacing: 0.00735em;
+    line-height: 1.235;
+  }
+
+  .back-button {
+    background: rgba(255, 255, 255, 0.08);
+    color: $primary-color;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    transition: all $transition-normal;
+    
+    &:hover {
+      background: rgba(255, 255, 255, 0.12);
+      border-color: $primary-color;
+      transform: translateX(-2px);
+    }
+  }
+
+  .header-actions {
+    display: flex;
+    gap: $spacing-sm;
+    
+    button {
+      border-radius: $border-radius-md;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      transition: all $transition-normal;
+      
+      &:hover {
+        transform: translateY(-1px);
+      }
+    }
+  }
+}
+
+// Loading & Error States
+.loading-state, .error-state {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 400px;
+}
+
+.loading-card, .error-card {
+  @include mat-card;
+  max-width: 400px;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(10px);
+}
+
+.loading-content, .error-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: $spacing-md;
+
+  .loading-icon, .error-icon {
+    font-size: 48px;
+    width: 48px;
+    height: 48px;
+    color: $primary-color;
+    opacity: 0.7;
+  }
+
+  h2 {
+    margin: 0;
+    color: $text-primary;
+    font-weight: 500;
+    font-size: 1.5rem;
+  }
+
+  p {
+    margin: 0;
+    color: $text-secondary;
+    font-size: 1rem;
+  }
+}
+
+// Main User Card
+.user-main-card {
+  @include mat-card-enhanced;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(10px);
+  overflow: hidden;
+
+  mat-card-header {
+    background: linear-gradient(135deg, $primary-color 0%, $primary-light 100%);
+    color: $text-primary;
+    padding: $spacing-xl;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+
+    .user-avatar-large {
+      @include user-avatar(80px);
+      border: 3px solid rgba(255, 255, 255, 0.3);
+      box-shadow: $shadow-light;
+    }
+
+    mat-card-title {
+      font-size: 1.75rem;
+      font-weight: 600;
+      margin-bottom: $spacing-xs;
+      color: $text-primary;
+    }
+
+    mat-card-subtitle {
+      color: rgba(255, 255, 255, 0.9);
+      
+      .user-status-container {
+        margin-top: $spacing-xs;
+      }
+    }
+  }
+}
+
+// User Info Grid
+.user-info-grid {
+  @include grid-layout(300px);
+  padding: $spacing-xl;
+  gap: $spacing-xl;
+}
+
+// Info Sections
+.info-section {
+  &.full-width {
+    grid-column: 1 / -1;
+  }
+
+  .section-title {
+    @include section-title;
+    font-size: 1.25rem;
+    margin-bottom: $spacing-md;
+    
+    mat-icon {
+      font-size: 24px;
+      width: 24px;
+      height: 24px;
+    }
+  }
+
+  mat-divider {
+    margin-bottom: $spacing-lg;
+    background-color: $text-divider;
+  }
+}
+
+// Info Rows
+.info-row {
+  display: flex;
+  align-items: flex-start;
+  gap: $spacing-md;
+  margin-bottom: $spacing-md;
+  padding: $spacing-sm 0;
+  transition: all $transition-fast;
+  border-radius: $border-radius-sm;
+
+  &:not(:last-child) {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.02);
+    padding-left: $spacing-xs;
+  }
+
+  .info-label {
+    display: flex;
+    align-items: center;
+    gap: $spacing-xs;
+    min-width: 140px;
+    font-weight: 500;
+    color: $text-secondary;
+    font-size: 0.875rem;
+
+    mat-icon {
+      font-size: 18px;
+      width: 18px;
+      height: 18px;
+      color: $primary-color;
+    }
+  }
+
+  .info-value {
+    flex: 1;
+    font-size: 0.95rem;
+    color: $text-primary;
+    display: flex;
+    align-items: center;
+    gap: $spacing-xs;
+
+    .no-data {
+      color: $text-hint;
+      font-style: italic;
+    }
+
+    .email-link {
+      display: flex;
+      align-items: center;
+      gap: $spacing-xs;
+
+      a {
+        color: $primary-color;
+        text-decoration: none;
+        transition: all $transition-fast;
+
+        &:hover {
+          text-decoration: underline;
+          color: $primary-light;
+        }
+      }
+
+      .validation-icon {
+        font-size: 18px;
+        width: 18px;
+        height: 18px;
+
+        &.valid {
+          color: $success-color;
+        }
+
+        &.invalid {
+          color: $error-color;
+        }
+      }
+    }
+
+    .age-chip {
+      font-size: 0.75rem;
+      min-height: 24px;
+      background: rgba($success-color, 0.2);
+      color: $success-color;
+      border-radius: $border-radius-lg;
+      padding: 4px $spacing-xs;
+    }
+
+    .initials-chip {
+      font-size: 0.875rem;
+      font-weight: bold;
+      min-height: 28px;
+      background: $primary-color;
+      color: $text-primary;
+      border-radius: $border-radius-lg;
+      padding: 4px $spacing-sm;
+    }
+
+    .address-highlight {
+      background: rgba($primary-color, 0.1);
+      padding: $spacing-xs $spacing-sm;
+      border-radius: $border-radius-sm;
+      border-left: 3px solid $primary-color;
+    }
+  }
+}
+
+// Address specific styling
+.address-container {
+  .info-row {
+    margin-bottom: $spacing-sm;
+  }
+}
+
+.no-address {
+  display: flex;
+  align-items: center;
+  gap: $spacing-xs;
+  color: $text-hint;
+  font-style: italic;
+  padding: $spacing-lg;
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: $border-radius-md;
+  text-align: center;
+  justify-content: center;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+// Card Actions
+.card-actions {
+  @include action-buttons;
+  padding: $spacing-md $spacing-xl;
+  background: rgba(255, 255, 255, 0.02);
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  justify-content: flex-start;
+
+  button {
+    border-radius: $border-radius-md;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: all $transition-normal;
+    padding: $spacing-xs $spacing-md;
+    
+    &:hover {
+      transform: translateY(-1px);
+    }
+
+    &[color="primary"] {
+      background: linear-gradient(135deg, $primary-color, $primary-light);
+      color: $text-primary;
+      
+      &:hover {
+        background: linear-gradient(135deg, $primary-light, $primary-color);
+      }
+    }
+
+    &[color="warn"] {
+      color: $error-color;
+      
+      &:hover {
+        background: rgba($error-color, 0.1);
+      }
+    }
+
+    mat-icon {
+      margin-right: $spacing-xs;
+    }
+  }
+}
+
+// Status Chips
+mat-chip {
+  &[color="primary"] {
+    background: rgba($primary-color, 0.2) !important;
+    color: $primary-color !important;
+    border: 1px solid rgba($primary-color, 0.3);
+  }
+
+  &[color="warn"] {
+    background: rgba($warning-color, 0.2) !important;
+    color: $warning-color !important;
+    border: 1px solid rgba($warning-color, 0.3);
+  }
+
+  mat-icon {
+    margin-right: $spacing-xs;
+  }
+}
+
+@include mobile-responsive {
+  .user-detail-container {
+    padding: $spacing-md;
+  }
+
+  .detail-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: $spacing-sm;
+
+    .header-actions {
+      width: 100%;
+      justify-content: flex-start;
+    }
+  }
+
+  .user-main-card {
+    mat-card-header {
+      padding: $spacing-lg;
+
+      .user-avatar-large {
+        @include user-avatar(60px);
+      }
+
+      mat-card-title {
+        font-size: 1.5rem;
+      }
+    }
+  }
+
+  .user-info-grid {
+    @include grid-layout(100%);
+    padding: $spacing-lg;
+    gap: $spacing-lg;
+  }
+
+  .info-row {
+    flex-direction: column;
+    gap: $spacing-xs;
+
+    .info-label {
+      min-width: auto;
+    }
+  }
+
+  .card-actions {
+    flex-direction: column;
+    gap: $spacing-sm;
+
+    button {
+      width: 100%;
+    }
+  }
+}
+
+@include tablet-responsive {
+  .user-detail-container {
+    padding: 20px;
+  }
+
+  .user-info-grid {
+    @include grid-layout(280px);
+  }
+}
+
+@include desktop-responsive {
+  .user-detail-container {
+    padding: $spacing-lg 24px;
+  }
+}

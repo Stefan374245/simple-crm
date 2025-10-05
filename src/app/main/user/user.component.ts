@@ -5,16 +5,16 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatCardModule } from '@angular/material/card';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 import { DialogAddUserComponent } from '../user/dialog-add-user/dialog-add-user.component';
 import { User } from '../../shared/models/user.class';
 import { UserService } from '../../shared/services/user.service';
 import { ToastService } from '../../shared/services/toast.service';
-import { ConfirmDialogService } from '../../shared/services/confirm-dialog.service';
 import { Subscription } from 'rxjs';
 
 /**
  * Component for managing users in the CRM system
- * Provides functionality to view, add, edit, and delete users
+ * Provides functionality to view and add users
  */
 @Component({
   selector: 'app-user',
@@ -25,6 +25,7 @@ import { Subscription } from 'rxjs';
     MatTooltipModule,
     MatCardModule,
     CommonModule,
+    RouterModule,
   ],
   templateUrl: './user.component.html',
   styleUrl: './user.component.scss',
@@ -40,13 +41,11 @@ export class UserComponent implements OnInit, OnDestroy {
    * @param dialog - Material Dialog service for opening dialogs
    * @param userService - Service for user CRUD operations
    * @param toastService - Service for displaying toast notifications
-   * @param confirmDialog - Service for confirmation dialogs
    */
   constructor(
     private dialog: MatDialog,
     private userService: UserService,
-    private toastService: ToastService,
-    private confirmDialog: ConfirmDialogService
+    private toastService: ToastService
   ) {}
 
   /**
@@ -96,68 +95,6 @@ export class UserComponent implements OnInit, OnDestroy {
           });
       }
     });
-  }
-
-  /**
-   * Opens the dialog for editing an existing user
-   * @param user - The user object to edit
-   */
-  editUser(user: User): void {
-    const dialogRef = this.dialog.open(DialogAddUserComponent, {
-      width: '500px',
-      data: { user: user, editMode: true },
-    });
-
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result && user.id) {
-        console.log('User bearbeitet:', result);
-
-        this.userService
-          .updateUser(user.id, result)
-          .then(() => {
-            console.log('User erfolgreich aktualisiert');
-            this.toastService.showSuccess(
-              `User "${result.getFullName()}" successfully updated!`
-            );
-          })
-          .catch((error) => {
-            console.error('Fehler beim Aktualisieren:', error);
-            this.toastService.showError(
-              'Error updating user! Please try again.'
-            );
-          });
-      }
-    });
-  }
-
-  /**
-   * Deletes a user after confirmation
-   * Shows confirmation dialog and handles the deletion process
-   * @param user - The user object to delete
-   */
-  deleteUser(user: User): void {
-    if (!user.id) return;
-
-    this.confirmDialog
-      .confirmDelete(user.getFullName())
-      .subscribe((confirmed) => {
-        if (confirmed) {
-          this.userService
-            .deleteUser(user.id!)
-            .then(() => {
-              console.log('User erfolgreich gelöscht');
-              this.toastService.showSuccess(
-                `User "${user.getFullName()}" successfully deleted!`
-              );
-            })
-            .catch((error) => {
-              console.error('Fehler beim Löschen:', error);
-              this.toastService.showError(
-                'Error deleting user! Please try again.'
-              );
-            });
-        }
-      });
   }
 
   /**
