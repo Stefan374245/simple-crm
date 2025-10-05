@@ -3,19 +3,35 @@
 
   <!-- User-Liste anzeigen -->
   <div class="user-list" *ngIf="users.length > 0">
-    <h2>All Users ({{ users.length }})</h2>
+    <h2 class="section-title">
+      <mat-icon>people</mat-icon>
+      All Users ({{ users.length }})
+    </h2>
     <div class="users-grid">
       <mat-card class="user-card" *ngFor="let user of users">
         <mat-card-content>
           <div class="user-content">
-            <div class="user-avatar">
-              <mat-icon>person</mat-icon>
+            <div class="user-avatar-container">
+              <div class="user-avatar">
+                {{ getUserInitials(user) }}
+              </div>
+              <div class="user-status online"></div>
             </div>
             <div class="user-info">
               <h3>{{ user.getFullName() }}</h3>
               <div class="user-details">
-                <p><strong>Age:</strong> {{ user.getAge() || 'N/A' }}</p>
-                <p><strong>Address:</strong> {{ user.getFullAddress() || 'No address' }}</p>
+                <p class="user-age">
+                  <mat-icon>cake</mat-icon>
+                  {{ user.getAge() ? user.getAge() + ' years old' : 'Age unknown' }}
+                </p>
+                <p class="user-address" *ngIf="user.getFullAddress()">
+                  <mat-icon>location_on</mat-icon>
+                  {{ user.getFullAddress() }}
+                </p>
+                <p class="user-address" *ngIf="!user.getFullAddress()">
+                  <mat-icon>location_off</mat-icon>
+                  No address provided
+                </p>
               </div>
             </div>
           </div>

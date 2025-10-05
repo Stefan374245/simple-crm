@@ -1,11 +1,13 @@
+@import '../../shared/mixin/index';
+
 .user-container {
-  padding: 24px;
+  padding: $spacing-lg;
   max-width: 1200px;
   margin: 0 auto;
 
   h1 {
-    color: #673ab7;
-    margin-bottom: 32px;
+    color: $primary-color;
+    margin-bottom: $spacing-xl;
     font-size: 2.125rem;
     font-weight: 400;
     font-family: 'Roboto', 'Helvetica Neue', sans-serif;
@@ -14,30 +16,28 @@
   }
 }
 
+.section-title {
+  @include section-title;
+}
+
 .add-user-btn {
   position: fixed;
-  bottom: 24px;
-  right: 24px;
+  bottom: $spacing-lg;
+  right: $spacing-lg;
   z-index: 100;
   width: 56px;
   height: 56px;
-  background-color: #673ab7;
+  background-color: $primary-color;
   color: white;
   border-radius: 50%;
-  box-shadow:
-    0px 3px 5px -1px rgba(0,0,0,0.2),
-    0px 6px 10px 0px rgba(0,0,0,0.14),
-    0px 1px 18px 0px rgba(0,0,0,0.12);
+  box-shadow: $shadow-light;
   transition: 
-    transform 250ms cubic-bezier(0.4, 0.0, 0.2, 1),
-    box-shadow 250ms cubic-bezier(0.4, 0.0, 0.2, 1);
+    transform $transition-normal,
+    box-shadow $transition-normal;
 
   &:hover {
     transform: scale(1.05);
-    box-shadow:
-      0px 5px 5px -3px rgba(0,0,0,0.2),
-      0px 8px 10px 1px rgba(0,0,0,0.14),
-      0px 3px 14px 2px rgba(0,0,0,0.12);
+    box-shadow: $shadow-medium;
   }
 
   mat-icon {
@@ -46,71 +46,48 @@
 }
 
 .user-list {
-  margin-bottom: 48px;
-
-  h2 {
-    color: #673ab7;
-    margin-bottom: 24px;
-    font-size: 1.5rem;
-    font-weight: 400;
-    line-height: 1.334;
-    letter-spacing: 0em;
-    font-family: 'Roboto', sans-serif;
-  }
+  margin-bottom: $spacing-xxl;
 }
 
 .users-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: 24px;
+  @include grid-layout;
 }
 
 .user-card {
-  border-radius: 8px;
-  transition: 
-    transform 250ms cubic-bezier(0.4, 0.0, 0.2, 1),
-    box-shadow 250ms cubic-bezier(0.4, 0.0, 0.2, 1);
-  box-shadow:
-    0px 2px 1px -1px rgba(0,0,0,0.2),
-    0px 1px 1px 0px rgba(0,0,0,0.14),
-    0px 1px 3px 0px rgba(0,0,0,0.12);
-
-  &:hover {
-    transform: translateY(-2px);
-    box-shadow:
-      0px 5px 5px -3px rgba(0,0,0,0.2),
-      0px 8px 10px 1px rgba(0,0,0,0.14),
-      0px 3px 14px 2px rgba(0,0,0,0.12);
-  }
-
-  mat-card-content {
-    padding: 20px !important;
-  }
+  @include mat-card;
 
   .user-content {
-    display: flex;
-    align-items: center;
-    gap: 16px;
+    @include user-content-layout;
   }
 
-  .user-avatar {
-    font-size: 24px;
-    width: 56px;
-    height: 56px;
-    color: #673ab7;
-    background-color: rgba(103, 58, 183, 0.08);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  .user-avatar-container {
+    position: relative;
+
+    .user-avatar {
+      @include user-avatar;
+    }
+
+    .user-status {
+      position: absolute;
+      bottom: 2px;
+      right: 2px;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      border: 2px solid white;
+
+      &.online {
+        background-color: $success-color;
+      }
+    }
   }
 
   .user-info {
-    flex: 1;
+    @include user-info-section;
 
     h3 {
-      margin: 0 0 4px 0;
-      color: #673ab7;
+      margin: 0 0 $spacing-xs 0;
+      color: $primary-color;
       font-size: 1.25rem;
       font-weight: 500;
       line-height: 1.6;
@@ -119,75 +96,56 @@
     }
 
     .user-details {
-      margin: 8px 0 0 0;
+      margin: $spacing-xs 0 0 0;
 
       p {
-        margin: 2px 0;
-        color: white;
+        margin: 4px 0;
+        color: $text-secondary;
         font-size: 0.875rem;
-        font-weight: 400;
-        line-height: 1.43;
-        letter-spacing: 0.01071em;
+        display: flex;
+        align-items: center;
+        gap: $spacing-xs;
 
-        strong {
-          color: #673ab7;
-          font-weight: 500;
+        &.user-age {
+          color: $text-secondary;
         }
-      }
 
-      .user-address {
-        font-style: italic;
-        color: white;
+        &.user-address {
+          color: $text-secondary;
+          font-style: italic;
+        }
+
+        mat-icon {
+          font-size: 16px;
+          width: 16px;
+          height: 16px;
+          color: $primary-color;
+        }
       }
     }
   }
 
-  mat-card-actions {
-    padding: 8px 16px 16px !important;
-    display: flex;
-    gap: 8px;
-    
-    button {
-      color: #673ab7;
-      font-weight: 500;
-      text-transform: uppercase;
-      letter-spacing: 0.0892857143em;
-      border-radius: 4px;
-      height: 36px;
-      min-width: 64px;
-
-      &.edit-btn {
-        color: #4caf50;
-      }
-
-      &.delete-btn {
-        color: #f44336;
-      }
-
-      mat-icon {
-        font-size: 18px;
-        margin-right: 4px;
-      }
-    }
+  mat-card_actions {
+    @include action-buttons;
   }
 }
 
 .no-users {
   text-align: center;
-  padding: 64px 24px;
-  color: rgba(0, 0, 0, 0.6);
+  padding: 64px $spacing-lg;
+  color: $text-secondary;
 
   .empty-icon {
     font-size: 96px;
     width: 96px;
     height: 96px;
-    color: rgba(0, 0, 0, 0.12);
-    margin-bottom: 24px;
+    color: $text-divider;
+    margin-bottom: $spacing-lg;
   }
 
   h2 {
-    margin-bottom: 16px;
-    color: #673ab7;
+    margin-bottom: $spacing-md;
+    color: $primary-color;
     font-size: 1.5rem;
     font-weight: 400;
     line-height: 1.334;
@@ -195,58 +153,52 @@
   }
 
   p {
-    margin-bottom: 32px;
+    margin-bottom: $spacing-xl;
     font-size: 1rem;
-    color: rgba(0, 0, 0, 0.6);
+    color: $text-secondary;
     line-height: 1.5;
     font-family: 'Roboto', sans-serif;
   }
 
   .add-first-user-btn {
     height: 48px;
-    border-radius: 4px;
+    border-radius: $border-radius-sm;
     font-weight: 500;
     text-transform: uppercase;
-    background-color: #673ab7;
+    background-color: $primary-color;
     color: white;
-    padding: 0 24px;
+    padding: 0 $spacing-lg;
     
     mat-icon {
-      margin-right: 8px;
+      margin-right: $spacing-xs;
     }
   }
 }
 
-// Material Design responsive breakpoints
-@media (max-width: 599.98px) {
+// Responsive Design
+@include mobile-responsive {
   .user-container {
-    padding: 16px;
+    padding: $spacing-md;
   }
 
   .users-grid {
     grid-template-columns: 1fr;
-    gap: 16px;
+    gap: $spacing-md;
   }
 
   .add-user-btn {
-    bottom: 16px;
-    right: 16px;
+    bottom: $spacing-md;
+    right: $spacing-md;
   }
 
-  .user-card {
-    .user-content {
-      flex-direction: column;
-      text-align: center;
-    }
-
-    mat-card-actions {
-      justify-content: center;
-      flex-wrap: wrap;
-    }
+  .user-card .user-content {
+    flex-direction: column;
+    text-align: center;
+    gap: $spacing-sm;
   }
 }
 
-@media (min-width: 600px) and (max-width: 959.98px) {
+@include tablet-responsive {
   .user-container {
     padding: 20px;
   }
@@ -256,8 +208,8 @@
   }
 }
 
-@media (min-width: 960px) {
+@include desktop-responsive {
   .user-container {
-    padding: 24px;
+    padding: $spacing-lg;
   }
 }

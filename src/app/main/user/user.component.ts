@@ -23,7 +23,7 @@ import { Subscription } from 'rxjs';
     CommonModule,
   ],
   templateUrl: './user.component.html',
-  styleUrl: './user.component.scss'
+  styleUrl: './user.component.scss',
 })
 export class UserComponent implements OnInit, OnDestroy {
   users: User[] = [];
@@ -37,8 +37,9 @@ export class UserComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
+    // User-Liste aus Firebase laden
     this.subscription.add(
-      this.userService.getAllUsers().subscribe(users => {
+      this.userService.getAllUsers().subscribe((users) => {
         this.users = users;
         console.log('Users from Firebase:', users);
       })
@@ -51,27 +52,26 @@ export class UserComponent implements OnInit, OnDestroy {
 
   openUserDialog(): void {
     const dialogRef = this.dialog.open(DialogAddUserComponent, {
-      width: '500px'
+      width: '500px',
     });
-    
-    dialogRef.afterClosed().subscribe(result => {
+
+    dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         console.log('Neuer User erstellt:', result);
-        
+
         // User zu Firebase hinzufügen
-        this.userService.addUser(result).then(id => {
-          console.log('User in Firebase gespeichert mit ID:', id);
-          // ✅ Success Toast für neuen User
-          this.toastService.showSuccess(
-            `🎉 User "${result.getFullName()}" was successfully added!`
-          );
-        }).catch(error => {
-          console.error('Fehler beim Speichern:', error);
-          // ❌ Error Toast
-          this.toastService.showError(
-            '❌ Error adding user! Please try again.'
-          );
-        });
+        this.userService
+          .addUser(result)
+          .then((id) => {
+            console.log('User in Firebase gespeichert mit ID:', id);
+            this.toastService.showSuccess(
+              `User "${result.getFullName()}" successfully added!`
+            );
+          })
+          .catch((error) => {
+            console.error('Fehler beim Speichern:', error);
+            this.toastService.showError('Error adding user! Please try again.');
+          });
       }
     });
   }
@@ -79,27 +79,28 @@ export class UserComponent implements OnInit, OnDestroy {
   editUser(user: User): void {
     const dialogRef = this.dialog.open(DialogAddUserComponent, {
       width: '500px',
-      data: { user: user, editMode: true }
+      data: { user: user, editMode: true },
     });
-    
-    dialogRef.afterClosed().subscribe(result => {
+
+    dialogRef.afterClosed().subscribe((result) => {
       if (result && user.id) {
         console.log('User bearbeitet:', result);
-        
+
         // User in Firebase aktualisieren
-        this.userService.updateUser(user.id, result).then(() => {
-          console.log('User erfolgreich aktualisiert');
-          // ✅ Success Toast für Edit
-          this.toastService.showSuccess(
-            `✏️ User "${result.getFullName()}" was successfully updated!`
-          );
-        }).catch(error => {
-          console.error('Fehler beim Aktualisieren:', error);
-          // ❌ Error Toast
-          this.toastService.showError(
-            '❌ Error updating user! Please try again.'
-          );
-        });
+        this.userService
+          .updateUser(user.id, result)
+          .then(() => {
+            console.log('User erfolgreich aktualisiert');
+            this.toastService.showSuccess(
+              `User "${result.getFullName()}" successfully updated!`
+            );
+          })
+          .catch((error) => {
+            console.error('Fehler beim Aktualisieren:', error);
+            this.toastService.showError(
+              'Error updating user! Please try again.'
+            );
+          });
       }
     });
   }
@@ -107,28 +108,32 @@ export class UserComponent implements OnInit, OnDestroy {
   deleteUser(user: User): void {
     if (!user.id) return;
 
-    // Schöner Bestätigungs-Dialog
-    this.confirmDialog.confirmDelete(user.getFullName()).subscribe(confirmed => {
-      if (confirmed) {
-        this.userService.deleteUser(user.id!).then(() => {
-          console.log('User erfolgreich gelöscht');
-          // ✅ Success Toast für Delete
-          this.toastService.showSuccess(
-            `🗑️ User "${user.getFullName()}" was successfully deleted!`
-          );
-        }).catch(error => {
-          console.error('Fehler beim Löschen:', error);
-          // ❌ Error Toast
-          this.toastService.showError(
-            '❌ Error deleting user! Please try again.'
-          );
-        });
-      } else {
-        // ℹ️ Info Toast wenn abgebrochen
-        this.toastService.showInfo(
-          `ℹ️ Delete cancelled. User "${user.getFullName()}" was not deleted.`
-        );
-      }
-    });
+    // Schöner Bestätigungs-Dialog statt alert()
+    this.confirmDialog
+      .confirmDelete(user.getFullName())
+      .subscribe((confirmed) => {
+        if (confirmed) {
+          this.userService
+            .deleteUser(user.id!)
+            .then(() => {
+              console.log('User erfolgreich gelöscht');
+              this.toastService.showSuccess(
+                `User "${user.getFullName()}" successfully deleted!`
+              );
+            })
+            .catch((error) => {
+              console.error('Fehler beim Löschen:', error);
+              this.toastService.showError(
+                'Error deleting user! Please try again.'
+              );
+            });
+        }
+      });
+  }
+
+  getUserInitials(user: User): string {
+    const firstName = user.firstName || '';
+    const lastName = user.lastName || '';
+    return (firstName.charAt(0) + lastName.charAt(0)).toUpperCase() || 'UN';
   }
 }

@@ -1,0 +1,195 @@
+@import 'variables';
+
+// Basis Card Mixin
+@mixin card-base {
+  border-radius: $border-radius-lg;
+  transition: all $transition-normal;
+  box-shadow: $shadow-light;
+
+  mat-card-content {
+    padding: $spacing-lg !important;
+  }
+
+  mat-card-actions {
+    padding: $spacing-xs $spacing-md $spacing-md !important;
+  }
+}
+
+// Hover Effekte
+@mixin card-hover {
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: $shadow-medium;
+  }
+}
+
+@mixin card-hover-enhanced {
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: $shadow-heavy;
+  }
+}
+
+// Kombinierte Mixins (das war das Problem!)
+@mixin mat-card {
+  @include card-base;
+  @include card-hover;
+}
+
+@mixin mat-card-enhanced {
+  @include card-base;
+  @include card-hover-enhanced;
+}
+
+// Weitere nützliche Mixins (optional, aber bereits verwendet)
+@mixin section-title {
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+  color: $text-primary;
+  font-size: 1.5rem;
+  font-weight: 500;
+  margin-bottom: $spacing-lg;
+  font-family: 'Roboto', sans-serif;
+
+  mat-icon {
+    color: $primary-color;
+    font-size: 28px;
+    width: 28px;
+    height: 28px;
+  }
+}
+
+@mixin grid-layout($min-width: 320px) {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax($min-width, 1fr));
+  gap: $spacing-lg;
+}
+
+@mixin user-avatar($size: 56px) {
+  width: $size;
+  height: $size;
+  border-radius: 50%;
+  background: linear-gradient(135deg, $primary-color, $primary-light);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: #{$size * 0.4};
+  letter-spacing: 1px;
+}
+
+@mixin user-avatar-container {
+  position: relative;
+
+  .user-avatar {
+    @include user-avatar;
+  }
+
+  .user-status {
+    position: absolute;
+    bottom: 2px;
+    right: 2px;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    border: 2px solid white;
+
+    &.online {
+      background-color: $success-color;
+    }
+  }
+}
+
+@mixin user-content-layout {
+  display: flex;
+  align-items: center;
+  gap: $spacing-md;
+}
+
+@mixin user-info-section {
+  flex: 1;
+
+  h3, h4 {
+    margin: 0 0 $spacing-xs 0;
+    color: $primary-color;
+    font-size: 1.25rem;
+    font-weight: 500;
+    line-height: 1.6;
+    letter-spacing: 0.0075em;
+    font-family: 'Roboto', sans-serif;
+  }
+
+  .user-details {
+    margin: $spacing-xs 0 0 0;
+
+    p {
+      margin: 4px 0;
+      color: $text-secondary;
+      font-size: 0.875rem;
+      display: flex;
+      align-items: center;
+      gap: $spacing-xs;
+
+      strong {
+        color: $primary-color;
+        font-weight: 500;
+      }
+
+      mat-icon {
+        font-size: 16px;
+        width: 16px;
+        height: 16px;
+        color: $primary-color;
+      }
+    }
+  }
+}
+
+@mixin action-buttons {
+  display: flex;
+  gap: $spacing-xs;
+  
+  button {
+    color: $primary-color;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.0892857143em;
+    border-radius: $border-radius-sm;
+    height: 36px;
+    min-width: 64px;
+
+    &.edit-btn {
+      color: $success-color;
+    }
+
+    &.delete-btn {
+      color: $error-color;
+    }
+
+    mat-icon {
+      font-size: 18px;
+      margin-right: 4px;
+    }
+  }
+}
+
+// Responsive Mixins
+@mixin mobile-responsive {
+  @media (max-width: $breakpoint-mobile) {
+    @content;
+  }
+}
+
+@mixin tablet-responsive {
+  @media (min-width: 600px) and (max-width: $breakpoint-tablet) {
+    @content;
+  }
+}
+
+@mixin desktop-responsive {
+  @media (min-width: 960px) {
+    @content;
+  }
+}
