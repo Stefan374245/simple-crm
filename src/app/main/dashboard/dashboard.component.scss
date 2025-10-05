@@ -1,4 +1,4 @@
-@import '../../shared/mixin/index';
+@import "../../shared/mixin/index";
 
 .dashboard-container {
   padding: $spacing-lg;
@@ -18,7 +18,7 @@
     margin-bottom: $spacing-xs;
     font-size: 2.5rem;
     font-weight: 300;
-    font-family: 'Roboto', sans-serif;
+    font-family: "Roboto", sans-serif;
     letter-spacing: -0.02em;
   }
 
@@ -52,7 +52,7 @@
 .section-title {
   @include section-title;
   color: $text-primary;
-  
+
   mat-icon {
     color: $primary-color;
   }
@@ -76,7 +76,7 @@
   backdrop-filter: blur(10px);
 
   &::before {
-    content: '';
+    content: "";
     position: absolute;
     top: 0;
     left: 0;
@@ -155,18 +155,21 @@
     }
 
     .stat-change {
+      display: flex;
+      align-items: center;
+      gap: 10px;
       margin-top: $spacing-xs;
       font-size: 0.75rem;
       font-weight: 500;
-      
+
       &.positive {
         color: $success-color;
       }
-      
+
       &.negative {
         color: $error-color;
       }
-      
+
       &.neutral {
         color: $text-hint;
       }
@@ -223,7 +226,7 @@
       height: 12px;
       border-radius: 50%;
       border: 2px solid rgba(255, 255, 255, 0.1);
-      
+
       &.online {
         background: $success-color;
       }
@@ -232,7 +235,9 @@
 
   .user-details {
     @include user-info-section;
-
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-xs;
     h4 {
       margin: 0 0 $spacing-xs 0;
       color: $text-primary;
@@ -241,25 +246,15 @@
     }
 
     p {
+      display: flex;
+      align-items: center;
+      gap: 20px;
       margin: 0;
       color: $text-secondary;
       font-size: 0.875rem;
-      
+
       &.user-age {
         color: $text-hint;
-      }
-    }
-  }
-
-  mat-card-actions {
-    display: flex;
-    gap: $spacing-sm;
-    
-    button {
-      color: $text-secondary;
-      
-      &:hover {
-        color: $primary-color;
       }
     }
   }
@@ -290,7 +285,7 @@
   .action-content {
     text-align: center;
     padding: $spacing-lg;
-    
+
     mat-icon {
       font-size: 48px;
       width: 48px;
@@ -298,13 +293,13 @@
       color: $primary-color;
       margin-bottom: $spacing-md;
     }
-    
+
     h3 {
       color: $text-primary;
       margin-bottom: $spacing-sm;
       font-weight: 500;
     }
-    
+
     p {
       color: $text-secondary;
       font-size: 0.875rem;
@@ -326,7 +321,7 @@
     background: rgba(255, 255, 255, 0.05);
     border-radius: $border-radius-lg;
     border: 1px solid $text-divider;
-    
+
     mat-icon {
       font-size: 64px;
       width: 64px;
@@ -334,16 +329,92 @@
       color: $text-hint;
       margin-bottom: $spacing-lg;
     }
-    
+
     h3 {
       color: $text-primary;
       margin-bottom: $spacing-md;
     }
-    
+
     p {
       color: $text-secondary;
       margin-bottom: $spacing-lg;
     }
+  }
+}
+
+// Konsistente Button-Styles für das gesamte Dashboard
+mat-card-actions,
+.card-actions,
+.empty-actions {
+  button {
+    color: $primary-color !important;
+    background: transparent !important;
+    border: 1px solid rgba($primary-color, 0.3) !important;
+    border-radius: $border-radius-md;
+    padding: $spacing-xs $spacing-md;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: all $transition-normal;
+    
+    &:hover:not([disabled]) {
+      background: rgba($primary-color, 0.1) !important;
+      border-color: $primary-color !important;
+      color: $primary-light !important;
+      transform: translateY(-1px);
+    }
+    
+    &[disabled] {
+      color: $text-disabled !important;
+      border-color: rgba(255, 255, 255, 0.12) !important;
+      cursor: not-allowed;
+      
+      &:hover {
+        transform: none;
+      }
+    }
+    
+    // Spezielle Farben für unterschiedliche Button-Typen
+    &.accent-button {
+      color: $accent-color !important;
+      border-color: rgba($accent-color, 0.3) !important;
+      
+      &:hover:not([disabled]) {
+        background: rgba($accent-color, 0.1) !important;
+        border-color: $accent-color !important;
+        color: $accent-light !important;
+      }
+    }
+    
+    &.success-button {
+      color: $success-color !important;
+      border-color: rgba($success-color, 0.3) !important;
+      
+      &:hover:not([disabled]) {
+        background: rgba($success-color, 0.1) !important;
+        border-color: $success-color !important;
+        color: $success-light !important;
+      }
+    }
+    
+    mat-icon {
+      margin-right: $spacing-xs;
+      font-size: 18px;
+      width: 18px;
+      height: 18px;
+    }
+  }
+}
+
+// Empty State Actions spezifisch
+.empty-actions {
+  display: flex;
+  gap: $spacing-md;
+  justify-content: center;
+  margin-top: $spacing-lg;
+  
+  .primary-action {
+    min-width: 200px;
   }
 }
 
@@ -366,6 +437,17 @@
   .user-preview-card .user-preview-content {
     flex-direction: column;
     text-align: center;
-    gap: $spacing-md;
+    gap: $spacing-xl;
+  }
+  
+  // Mobile Button Anpassungen
+  .empty-actions {
+    flex-direction: column;
+    align-items: center;
+    
+    button {
+      width: 100%;
+      max-width: 280px;
+    }
   }
 }
