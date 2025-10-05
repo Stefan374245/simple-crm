@@ -12,6 +12,10 @@ import { ToastService } from '../../shared/services/toast.service';
 import { ConfirmDialogService } from '../../shared/services/confirm-dialog.service';
 import { Subscription } from 'rxjs';
 
+/**
+ * Component for managing users in the CRM system
+ * Provides functionality to view, add, edit, and delete users
+ */
 @Component({
   selector: 'app-user',
   imports: [
@@ -26,9 +30,18 @@ import { Subscription } from 'rxjs';
   styleUrl: './user.component.scss',
 })
 export class UserComponent implements OnInit, OnDestroy {
+  /** Array of all users to display */
   users: User[] = [];
+  /** Subscription handler for managing observable subscriptions */
   private subscription: Subscription = new Subscription();
 
+  /**
+   * Creates an instance of UserComponent
+   * @param dialog - Material Dialog service for opening dialogs
+   * @param userService - Service for user CRUD operations
+   * @param toastService - Service for displaying toast notifications
+   * @param confirmDialog - Service for confirmation dialogs
+   */
   constructor(
     private dialog: MatDialog,
     private userService: UserService,
@@ -36,6 +49,9 @@ export class UserComponent implements OnInit, OnDestroy {
     private confirmDialog: ConfirmDialogService
   ) {}
 
+  /**
+   * Angular lifecycle hook - initializes component and loads users
+   */
   ngOnInit(): void {
     this.subscription.add(
       this.userService.getAllUsers().subscribe((users) => {
@@ -45,13 +61,21 @@ export class UserComponent implements OnInit, OnDestroy {
     );
   }
 
+  /**
+   * Angular lifecycle hook - cleans up subscriptions to prevent memory leaks
+   */
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
   }
 
+  /**
+   * Opens the dialog for adding a new user
+   * Handles the creation process and displays success/error messages
+   */
   openUserDialog(): void {
     const dialogRef = this.dialog.open(DialogAddUserComponent, {
       width: '500px',
+      panelClass: 'custom-dialog-container',
     });
 
     dialogRef.afterClosed().subscribe((result) => {
@@ -59,7 +83,7 @@ export class UserComponent implements OnInit, OnDestroy {
         console.log('Neuer User erstellt:', result);
 
         this.userService
-          .addUser(result)
+          .createUser(result)
           .then((id) => {
             console.log('User in Firebase gespeichert mit ID:', id);
             this.toastService.showSuccess(
@@ -74,6 +98,10 @@ export class UserComponent implements OnInit, OnDestroy {
     });
   }
 
+  /**
+   * Opens the dialog for editing an existing user
+   * @param user - The user object to edit
+   */
   editUser(user: User): void {
     const dialogRef = this.dialog.open(DialogAddUserComponent, {
       width: '500px',
@@ -102,6 +130,11 @@ export class UserComponent implements OnInit, OnDestroy {
     });
   }
 
+  /**
+   * Deletes a user after confirmation
+   * Shows confirmation dialog and handles the deletion process
+   * @param user - The user object to delete
+   */
   deleteUser(user: User): void {
     if (!user.id) return;
 
@@ -127,6 +160,11 @@ export class UserComponent implements OnInit, OnDestroy {
       });
   }
 
+  /**
+   * Gets the initials for a user to display in the UI
+   * @param user - The user object to get initials from
+   * @returns Two-character initials string
+   */
   getUserInitials(user: User): string {
     return user.getInitials();
   }

@@ -8,22 +8,18 @@ export class ToastService {
 
   constructor(private snackBar: MatSnackBar) {}
 
-  // Erfolg Toast (grün)
   showSuccess(message: string, duration: number = 4000): void {
     this.showToast(message, 'success-toast', duration);
   }
 
-  // Fehler Toast (rot)
   showError(message: string, duration: number = 5000): void {
     this.showToast(message, 'error-toast', duration);
   }
 
-  // Info Toast (blau)
   showInfo(message: string, duration: number = 4000): void {
     this.showToast(message, 'info-toast', duration);
   }
 
-  // Warnung Toast (orange)
   showWarning(message: string, duration: number = 4000): void {
     this.showToast(message, 'warning-toast', duration);
   }
@@ -31,7 +27,7 @@ export class ToastService {
   private showToast(message: string, panelClass: string, duration: number): void {
     const config: MatSnackBarConfig = {
       duration: duration,
-      horizontalPosition: 'right',
+      horizontalPosition: 'center',
       verticalPosition: 'top',
       panelClass: [panelClass]
     };

@@ -1,4 +1,4 @@
-@import '../../shared/mixin/index';
+@import "../../shared/mixin/index";
 
 .user-container {
   padding: $spacing-lg;
@@ -13,7 +13,7 @@
     margin-bottom: $spacing-xl;
     font-size: 2.125rem;
     font-weight: 400;
-    font-family: 'Roboto', 'Helvetica Neue', sans-serif;
+    font-family: "Roboto", "Helvetica Neue", sans-serif;
     letter-spacing: 0.00735em;
     line-height: 1.235;
   }
@@ -22,7 +22,7 @@
 .section-title {
   @include section-title;
   color: $text-primary;
-  
+
   mat-icon {
     color: $primary-color;
   }
@@ -39,9 +39,7 @@
   color: $text-primary;
   border-radius: 50%;
   box-shadow: $shadow-medium;
-  transition: 
-    transform $transition-normal,
-    box-shadow $transition-normal;
+  transition: transform $transition-normal, box-shadow $transition-normal;
 
   &:hover {
     transform: scale(1.05);
@@ -82,6 +80,7 @@
 
   .user-avatar-container {
     position: relative;
+    margin-top: 24px;
 
     .user-avatar {
       width: 64px;
@@ -105,12 +104,12 @@
       height: 16px;
       border-radius: 50%;
       border: 3px solid rgba(255, 255, 255, 0.1);
-      
+
       &.online {
         background: $success-color;
         box-shadow: 0 0 8px rgba(76, 175, 80, 0.4);
       }
-      
+
       &.offline {
         background: $text-hint;
       }
@@ -121,40 +120,35 @@
     @include user-info-section;
 
     h3 {
-      margin: 0 0 $spacing-xs 0;
+      margin: 0 0 $spacing-lg 0;
       color: $text-primary;
-      font-size: 1.25rem;
+      font-size: 1.5rem;
       font-weight: 500;
       line-height: 1.2;
     }
 
     .user-details {
-      .user-age {
+      .user-age,
+      .user-address,
+      .user-email {
         color: $text-secondary;
-        font-size: 0.875rem;
+        font-size: 1rem;
         margin: $spacing-xs 0;
-        
+
         mat-icon {
           font-size: 16px;
           width: 16px;
           height: 16px;
-          color: $text-hint;
           margin-right: $spacing-xs;
         }
       }
-      
-      .user-address {
-        color: $text-hint;
-        font-size: 0.75rem;
-        line-height: 1.4;
-        
-        mat-icon {
-          font-size: 14px;
-          width: 14px;
-          height: 14px;
-          margin-right: $spacing-xs;
-          color: $text-divider;
-        }
+
+      mat-icon {
+        font-size: 14px;
+        width: 14px;
+        height: 14px;
+        margin-right: $spacing-xs;
+        color: $text-divider;
       }
     }
   }
@@ -165,28 +159,28 @@
     gap: $spacing-sm;
     padding-top: $spacing-md;
     border-top: 1px solid $text-divider;
-    
+
     .edit-btn {
       color: $text-secondary;
-      
+
       &:hover {
         color: $primary-color;
         background: rgba(103, 58, 183, 0.1);
       }
-      
+
       mat-icon {
         margin-right: $spacing-xs;
       }
     }
-    
+
     .delete-btn {
       color: $text-secondary;
-      
+
       &:hover {
         color: $error-color;
         background: rgba(244, 67, 54, 0.1);
       }
-      
+
       mat-icon {
         margin-right: $spacing-xs;
       }
@@ -215,7 +209,7 @@
     font-size: 1.5rem;
     font-weight: 400;
     line-height: 1.334;
-    font-family: 'Roboto', sans-serif;
+    font-family: "Roboto", sans-serif;
   }
 
   p {
@@ -231,11 +225,11 @@
     padding: $spacing-md $spacing-xl;
     font-weight: 500;
     border-radius: $border-radius-md;
-    
+
     mat-icon {
       margin-right: $spacing-sm;
     }
-    
+
     &:hover {
       background: linear-gradient(135deg, $primary-light, $primary-color);
       transform: translateY(-1px);

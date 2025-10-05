@@ -98,11 +98,12 @@ export class DialogAddUserComponent implements OnInit {
 
   get progressPercentage(): number {
     let filledFields = 0;
-    const totalFields = 6;
+    const totalFields = 7;
 
     if (this.hasValidString(this.user.firstName)) filledFields++;
     if (this.hasValidString(this.user.lastName)) filledFields++;
     if (this.user.birthDate) filledFields++;
+    if (this.user.email && this.hasValidString(this.user.email)) filledFields++;
     if (this.hasValidString(this.user.street)) filledFields++;
     if (this.hasValidString(this.user.zipCode)) filledFields++;
     if (this.hasValidString(this.user.city)) filledFields++;
@@ -112,7 +113,7 @@ export class DialogAddUserComponent implements OnInit {
 
   get progressText(): string {
     const filled = this.getFilledFieldsCount();
-    return `${filled}/6 fields completed`;
+    return `${filled}/7 fields completed`;
   }
 
   private getFilledFieldsCount(): number {
@@ -120,6 +121,7 @@ export class DialogAddUserComponent implements OnInit {
     if (this.hasValidString(this.user.firstName)) count++;
     if (this.hasValidString(this.user.lastName)) count++;
     if (this.user.birthDate) count++;
+    if (this.user.email && this.hasValidString(this.user.email)) count++;
     if (this.hasValidString(this.user.street)) count++;
     if (this.hasValidString(this.user.zipCode)) count++;
     if (this.hasValidString(this.user.city)) count++;
