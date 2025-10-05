@@ -5,6 +5,8 @@
   max-width: 1400px;
   margin: 0 auto;
   min-height: calc(100vh - 120px);
+  background: linear-gradient(135deg, #1e1e1e 0%, #2d2d2d 100%);
+  color: $text-primary;
 }
 
 .dashboard-header {
@@ -12,7 +14,7 @@
   text-align: center;
 
   h1 {
-    color: $primary-color;
+    color: $text-primary;
     margin-bottom: $spacing-xs;
     font-size: 2.5rem;
     font-weight: 300;
@@ -38,36 +40,22 @@
     @include mat-card;
     padding: 40px;
     text-align: center;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
 
     .loading-content {
-      .loading-icon {
-        font-size: 64px;
-        width: 64px;
-        height: 64px;
-        color: $primary-color;
-        margin-bottom: $spacing-lg;
-        animation: rotate 2s linear infinite;
-      }
+      color: $text-secondary;
     }
   }
 }
 
-@keyframes rotate {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-
-.dashboard-content {
-  animation: fadeIn 0.5s ease-in-out;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
 .section-title {
   @include section-title;
+  color: $text-primary;
+  
+  mat-icon {
+    color: $primary-color;
+  }
 }
 
 .stats-section {
@@ -83,6 +71,9 @@
   @include mat-card-enhanced;
   position: relative;
   overflow: hidden;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(10px);
 
   &::before {
     content: '';
@@ -122,10 +113,8 @@
     justify-content: center;
 
     mat-icon {
-      font-size: 32px;
-      width: 32px;
-      height: 32px;
-      color: white;
+      font-size: 28px;
+      color: $text-primary;
     }
 
     &.users {
@@ -150,36 +139,36 @@
 
     h3 {
       margin: 0 0 $spacing-xs 0;
-      font-size: 2.5rem;
-      font-weight: 300;
+      font-size: 2.25rem;
+      font-weight: 600;
       color: $text-primary;
-      line-height: 1;
+      line-height: 1.1;
     }
 
     p {
-      margin: 0 0 $spacing-xs 0;
+      margin: 0;
       color: $text-secondary;
-      font-size: 1rem;
+      font-size: 0.875rem;
       font-weight: 500;
       text-transform: uppercase;
       letter-spacing: 0.5px;
     }
 
     .stat-change {
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      font-size: 0.875rem;
-      color: $text-hint;
-
+      margin-top: $spacing-xs;
+      font-size: 0.75rem;
+      font-weight: 500;
+      
       &.positive {
         color: $success-color;
       }
-
-      mat-icon {
-        font-size: 16px;
-        width: 16px;
-        height: 16px;
+      
+      &.negative {
+        color: $error-color;
+      }
+      
+      &.neutral {
+        color: $text-hint;
       }
     }
   }
@@ -196,6 +185,15 @@
 
 .user-preview-card {
   @include mat-card;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all $transition-normal;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: $primary-color;
+    transform: translateY(-2px);
+  }
 
   .user-preview-content {
     @include user-content-layout;
@@ -205,20 +203,29 @@
     position: relative;
 
     .user-avatar {
-      @include user-avatar;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, $primary-color, $primary-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: $text-primary;
+      font-weight: 600;
+      font-size: 1.125rem;
     }
 
     .user-status {
       position: absolute;
       bottom: 2px;
       right: 2px;
-      width: 14px;
-      height: 14px;
+      width: 12px;
+      height: 12px;
       border-radius: 50%;
-      border: 2px solid white;
-
+      border: 2px solid rgba(255, 255, 255, 0.1);
+      
       &.online {
-        background-color: $success-color;
+        background: $success-color;
       }
     }
   }
@@ -228,47 +235,32 @@
 
     h4 {
       margin: 0 0 $spacing-xs 0;
-      color: $primary-color;
-      font-size: 1.25rem;
+      color: $text-primary;
+      font-size: 1.125rem;
       font-weight: 500;
-      line-height: 1.6;
-      letter-spacing: 0.0075em;
-      font-family: 'Roboto', sans-serif;
     }
 
     p {
-      margin: 4px 0;
+      margin: 0;
       color: $text-secondary;
       font-size: 0.875rem;
-      display: flex;
-      align-items: center;
-      gap: $spacing-xs;
-
+      
       &.user-age {
-        color: $text-secondary;
-      }
-
-      &.user-address {
-        color: $text-secondary;
-        font-style: italic;
-      }
-
-      mat-icon {
-        font-size: 16px;
-        width: 16px;
-        height: 16px;
-        color: $primary-color;
+        color: $text-hint;
       }
     }
   }
 
-  mat-card_actions {
+  mat-card-actions {
     display: flex;
-    gap: $spacing-xs;
-
+    gap: $spacing-sm;
+    
     button {
-      color: $primary-color;
-      font-weight: 500;
+      color: $text-secondary;
+      
+      &:hover {
+        color: $primary-color;
+      }
     }
   }
 }
@@ -284,27 +276,36 @@
 .action-card {
   @include mat-card;
   height: 100%;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all $transition-normal;
+  cursor: pointer;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: $primary-color;
+    transform: translateY(-2px);
+  }
 
   .action-content {
     text-align: center;
-
-    .action-icon {
+    padding: $spacing-lg;
+    
+    mat-icon {
       font-size: 48px;
       width: 48px;
       height: 48px;
       color: $primary-color;
       margin-bottom: $spacing-md;
     }
-
+    
     h3 {
-      margin: 0 0 $spacing-sm 0;
       color: $text-primary;
-      font-size: 1.25rem;
+      margin-bottom: $spacing-sm;
       font-weight: 500;
     }
-
+    
     p {
-      margin: 0;
       color: $text-secondary;
       font-size: 0.875rem;
       line-height: 1.5;
@@ -320,34 +321,28 @@
   margin-top: 40px;
 
   .empty-state-card {
-    @include mat-card;
-    max-width: 600px;
-    border-radius: $border-radius-xl;
-
-    .empty-content {
-      text-align: center;
-
-      .empty-icon {
-        font-size: 120px;
-        width: 120px;
-        height: 120px;
-        color: $text-divider;
-        margin-bottom: $spacing-xl;
-      }
-
-      h2 {
-        color: $primary-color;
-        font-size: 2rem;
-        font-weight: 400;
-        margin-bottom: $spacing-md;
-      }
-
-      p {
-        color: $text-secondary;
-        font-size: 1.125rem;
-        line-height: 1.6;
-        margin-bottom: $spacing-xl;
-      }
+    text-align: center;
+    padding: $spacing-xxl;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: $border-radius-lg;
+    border: 1px solid $text-divider;
+    
+    mat-icon {
+      font-size: 64px;
+      width: 64px;
+      height: 64px;
+      color: $text-hint;
+      margin-bottom: $spacing-lg;
+    }
+    
+    h3 {
+      color: $text-primary;
+      margin-bottom: $spacing-md;
+    }
+    
+    p {
+      color: $text-secondary;
+      margin-bottom: $spacing-lg;
     }
   }
 }
@@ -362,7 +357,6 @@
   .recent-users-grid,
   .action-cards-grid {
     grid-template-columns: 1fr;
-    gap: $spacing-md;
   }
 
   .dashboard-header h1 {
@@ -372,22 +366,6 @@
   .user-preview-card .user-preview-content {
     flex-direction: column;
     text-align: center;
-    gap: $spacing-sm;
-  }
-}
-
-@include tablet-responsive {
-  .dashboard-container {
-    padding: 20px;
-  }
-
-  .stats-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (min-width: 1200px) {
-  .stats-grid {
-    grid-template-columns: repeat(4, 1fr);
+    gap: $spacing-md;
   }
 }

@@ -1,23 +1,171 @@
+@import '../../mixin/index';
+
 .sidenav-container {
   height: 100%;
+  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
 }
 
 .sidenav {
-  width: 250px;
+  width: 280px;
+  background: linear-gradient(180deg, #1e1e1e 0%, #2a2a2a 100%);
+  border-right: 1px solid rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(10px);
 }
 
+// ✅ Logo Container Styling
 .logo-container {
-  box-shadow: 0 2px 4px rgba(156, 39, 176, 0.15);
+  background: linear-gradient(135deg, #1e1e1e 0%, #2d2d2d 100%);
+  color: $text-primary;
+  padding: $spacing-lg;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.nav-list a {
-    margin: 10px 0;
-
-    &.active {
-        background-color: rgba(156, 39, 176, 0.15);
+.logo-wrapper {
+  display: flex;
+  align-items: center;
+  gap: $spacing-md;
+  
+  .logo {
+    width: 120px;
+    height: 120px;
+    object-fit: contain;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+    transition: transform $transition-normal;
+    
+    &:hover {
+      transform: scale(1.05);
     }
+  }
+  
+  .logo-text {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: $text-primary;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    letter-spacing: 0.5px;
+  }
 }
 
+// ✅ Top Toolbar Logo
+.top-title {
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+  margin-left: auto;
+  
+  span {
+    font-size: 1.125rem;
+    font-weight: 500;
+    color: $text-primary;
+  }
+}
+
+// ✅ Navigation Styling
+.nav-list {
+  padding-top: $spacing-lg;
+  
+  a[mat-list-item] {
+    border-radius: $border-radius-md;
+    color: $text-secondary;
+    transition: all $transition-normal;
+    
+    &:hover {
+      background: rgba(255, 255, 255, 0.08);
+      color: $text-primary;
+      transform: translateX(4px);
+    }
+    
+    &.active {
+      background: linear-gradient(135deg, $primary-color, $primary-light);
+      color: $text-primary;
+      box-shadow: $shadow-light;
+      
+      mat-icon {
+        color: $text-primary;
+      }
+    }
+    
+    mat-icon {
+      color: $text-hint;
+      margin-right: $spacing-md;
+      transition: color $transition-normal;
+    }
+    
+    span {
+      font-weight: 500;
+    }
+  }
+}
+
+// ✅ Top Toolbar Styling
+mat-toolbar[color="primary"] {
+  background: linear-gradient(90deg, $primary-color 0%, $primary-light 100%);
+  color: $text-primary;
+  box-shadow: $shadow-medium;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  
+  button[mat-icon-button] {
+    color: $text-primary;
+    margin-right: $spacing-md;
+    
+    &:hover {
+      background: rgba(255, 255, 255, 0.1);
+      transform: scale(1.05);
+    }
+  }
+}
+
+// ✅ Router Content
 .router-content {
-  padding: 20px;
+  height: calc(100vh - 64px);
+  overflow: auto;
+  background: linear-gradient(135deg, #1e1e1e 0%, #2d2d2d 100%);
+}
+
+// ✅ Responsive Design
+@include mobile-responsive {
+  .sidenav {
+    width: 100%;
+  }
+  
+  .logo-wrapper {
+    flex-direction: column;
+    gap: $spacing-sm;
+    
+    .logo {
+      width: 40px;
+      height: 40px;
+    }
+    
+    .logo-text {
+      font-size: 1rem;
+    }
+  }
+  
+  .top-logo {
+    .logo-small {
+      width: 24px;
+      height: 24px;
+    }
+    
+    span {
+      font-size: 1rem;
+    }
+  }
+}
+
+@include tablet-responsive {
+  .sidenav {
+    width: 240px;
+  }
+  
+  .logo-wrapper {
+    .logo {
+      width: 40px;
+      height: 40px;
+    }
+  }
 }

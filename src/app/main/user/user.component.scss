@@ -4,9 +4,12 @@
   padding: $spacing-lg;
   max-width: 1200px;
   margin: 0 auto;
+  background: linear-gradient(135deg, #1e1e1e 0%, #2d2d2d 100%);
+  min-height: calc(100vh - 120px);
+  color: $text-primary;
 
   h1 {
-    color: $primary-color;
+    color: $text-primary;
     margin-bottom: $spacing-xl;
     font-size: 2.125rem;
     font-weight: 400;
@@ -18,6 +21,11 @@
 
 .section-title {
   @include section-title;
+  color: $text-primary;
+  
+  mat-icon {
+    color: $primary-color;
+  }
 }
 
 .add-user-btn {
@@ -27,21 +35,22 @@
   z-index: 100;
   width: 56px;
   height: 56px;
-  background-color: $primary-color;
-  color: white;
+  background: linear-gradient(135deg, $primary-color, $primary-light);
+  color: $text-primary;
   border-radius: 50%;
-  box-shadow: $shadow-light;
+  box-shadow: $shadow-medium;
   transition: 
     transform $transition-normal,
     box-shadow $transition-normal;
 
   &:hover {
     transform: scale(1.05);
-    box-shadow: $shadow-medium;
+    box-shadow: $shadow-heavy;
   }
 
   mat-icon {
     font-size: 24px;
+    color: $text-primary;
   }
 }
 
@@ -55,6 +64,17 @@
 
 .user-card {
   @include mat-card;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(10px);
+  transition: all $transition-normal;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: $primary-color;
+    transform: translateY(-2px);
+    box-shadow: $shadow-medium;
+  }
 
   .user-content {
     @include user-content-layout;
@@ -64,20 +84,35 @@
     position: relative;
 
     .user-avatar {
-      @include user-avatar;
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, $primary-color, $primary-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: $text-primary;
+      font-weight: 600;
+      font-size: 1.5rem;
+      box-shadow: $shadow-light;
     }
 
     .user-status {
       position: absolute;
-      bottom: 2px;
-      right: 2px;
-      width: 14px;
-      height: 14px;
+      bottom: 4px;
+      right: 4px;
+      width: 16px;
+      height: 16px;
       border-radius: 50%;
-      border: 2px solid white;
-
+      border: 3px solid rgba(255, 255, 255, 0.1);
+      
       &.online {
-        background-color: $success-color;
+        background: $success-color;
+        box-shadow: 0 0 8px rgba(76, 175, 80, 0.4);
+      }
+      
+      &.offline {
+        background: $text-hint;
       }
     }
   }
@@ -87,39 +122,38 @@
 
     h3 {
       margin: 0 0 $spacing-xs 0;
-      color: $primary-color;
+      color: $text-primary;
       font-size: 1.25rem;
       font-weight: 500;
-      line-height: 1.6;
-      letter-spacing: 0.0075em;
-      font-family: 'Roboto', sans-serif;
+      line-height: 1.2;
     }
 
     .user-details {
-      margin: $spacing-xs 0 0 0;
-
-      p {
-        margin: 4px 0;
+      .user-age {
         color: $text-secondary;
         font-size: 0.875rem;
-        display: flex;
-        align-items: center;
-        gap: $spacing-xs;
-
-        &.user-age {
-          color: $text-secondary;
-        }
-
-        &.user-address {
-          color: $text-secondary;
-          font-style: italic;
-        }
-
+        margin: $spacing-xs 0;
+        
         mat-icon {
           font-size: 16px;
           width: 16px;
           height: 16px;
-          color: $primary-color;
+          color: $text-hint;
+          margin-right: $spacing-xs;
+        }
+      }
+      
+      .user-address {
+        color: $text-hint;
+        font-size: 0.75rem;
+        line-height: 1.4;
+        
+        mat-icon {
+          font-size: 14px;
+          width: 14px;
+          height: 14px;
+          margin-right: $spacing-xs;
+          color: $text-divider;
         }
       }
     }
@@ -127,25 +161,57 @@
 
   mat-card_actions {
     @include action-buttons;
+    display: flex;
+    gap: $spacing-sm;
+    padding-top: $spacing-md;
+    border-top: 1px solid $text-divider;
+    
+    .edit-btn {
+      color: $text-secondary;
+      
+      &:hover {
+        color: $primary-color;
+        background: rgba(103, 58, 183, 0.1);
+      }
+      
+      mat-icon {
+        margin-right: $spacing-xs;
+      }
+    }
+    
+    .delete-btn {
+      color: $text-secondary;
+      
+      &:hover {
+        color: $error-color;
+        background: rgba(244, 67, 54, 0.1);
+      }
+      
+      mat-icon {
+        margin-right: $spacing-xs;
+      }
+    }
   }
 }
 
 .no-users {
   text-align: center;
   padding: 64px $spacing-lg;
-  color: $text-secondary;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: $border-radius-lg;
+  border: 1px solid $text-divider;
 
   .empty-icon {
     font-size: 96px;
     width: 96px;
     height: 96px;
-    color: $text-divider;
+    color: $text-hint;
     margin-bottom: $spacing-lg;
   }
 
   h2 {
     margin-bottom: $spacing-md;
-    color: $primary-color;
+    color: $text-primary;
     font-size: 1.5rem;
     font-weight: 400;
     line-height: 1.334;
@@ -157,20 +223,23 @@
     font-size: 1rem;
     color: $text-secondary;
     line-height: 1.5;
-    font-family: 'Roboto', sans-serif;
   }
 
   .add-first-user-btn {
-    height: 48px;
-    border-radius: $border-radius-sm;
+    background: linear-gradient(135deg, $primary-color, $primary-light);
+    color: $text-primary;
+    padding: $spacing-md $spacing-xl;
     font-weight: 500;
-    text-transform: uppercase;
-    background-color: $primary-color;
-    color: white;
-    padding: 0 $spacing-lg;
+    border-radius: $border-radius-md;
     
     mat-icon {
-      margin-right: $spacing-xs;
+      margin-right: $spacing-sm;
+    }
+    
+    &:hover {
+      background: linear-gradient(135deg, $primary-light, $primary-color);
+      transform: translateY(-1px);
+      box-shadow: $shadow-medium;
     }
   }
 }
@@ -183,7 +252,6 @@
 
   .users-grid {
     grid-template-columns: 1fr;
-    gap: $spacing-md;
   }
 
   .add-user-btn {
@@ -194,7 +262,7 @@
   .user-card .user-content {
     flex-direction: column;
     text-align: center;
-    gap: $spacing-sm;
+    gap: $spacing-md;
   }
 }
 

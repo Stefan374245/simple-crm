@@ -1,6 +1,5 @@
 @import 'variables';
 
-// Basis Card Mixin
 @mixin card-base {
   border-radius: $border-radius-lg;
   transition: all $transition-normal;
@@ -15,7 +14,6 @@
   }
 }
 
-// Hover Effekte
 @mixin card-hover {
   &:hover {
     transform: translateY(-2px);
@@ -30,7 +28,6 @@
   }
 }
 
-// Kombinierte Mixins (das war das Problem!)
 @mixin mat-card {
   @include card-base;
   @include card-hover;
@@ -41,7 +38,6 @@
   @include card-hover-enhanced;
 }
 
-// Weitere nützliche Mixins (optional, aber bereits verwendet)
 @mixin section-title {
   display: flex;
   align-items: center;
@@ -175,7 +171,7 @@
   }
 }
 
-// Responsive Mixins
+
 @mixin mobile-responsive {
   @media (max-width: $breakpoint-mobile) {
     @content;

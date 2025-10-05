@@ -3,7 +3,12 @@
       [attr.role]="'dialog'"
       mode="side"
       [opened]="true">
-    <mat-toolbar class="logo-container">PLATZ fUER LOGO</mat-toolbar>
+    <mat-toolbar class="logo-container">
+      <div class="logo-wrapper">
+        <img src="img/crm-logo.png" alt="Simple CRM Logo" class="logo">
+
+      </div>
+    </mat-toolbar>
     <mat-nav-list class="nav-list">
       <a mat-list-item routerLink="/dashboard" routerLinkActive="active">
         <mat-icon matListItemIcon>home</mat-icon>
@@ -29,7 +34,9 @@
         (click)="drawer.toggle()">
         <mat-icon>menu</mat-icon>
       </button>
-      <span>Simple CRM</span>
+      <div class="top-title">
+        <span>Simple CRM</span>
+      </div>
     </mat-toolbar>
     
     <div class="router-content">

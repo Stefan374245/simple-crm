@@ -38,29 +38,74 @@ export class DialogAddUserComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // Prüfen ob Edit-Modus
     if (this.data?.editMode && this.data?.user) {
       this.editMode = true;
       this.dialogTitle = 'Edit User';
       
-      // ✅ Neue User-Instanz erstellen um Referenz-Probleme zu vermeiden
-      this.user = new User(this.data.user.toJSON());
+      // ✅ Debug: Schauen wir uns die Original-Daten an
+      console.log('Original user data:', this.data.user);
+      console.log('ZipCode original:', this.data.user.zipCode, 'Type:', typeof this.data.user.zipCode);
       
-      console.log('Edit mode - loaded user:', this.user);
+      this.user = new User(this.data.user);
+      
+      // ✅ Debug: Nach der Konvertierung
+      console.log('Converted user:', this.user);
+      console.log('ZipCode converted:', this.user.zipCode, 'Type:', typeof this.user.zipCode);
+      
+      // ✅ FALLBACK: Alle String-Felder explizit zu Strings konvertieren
+      this.sanitizeUserData();
     }
+  }
+
+  // ✅ Alle Properties zu sauberen Strings konvertieren
+  private sanitizeUserData(): void {
+    this.user.firstName = this.toSafeString(this.user.firstName);
+    this.user.lastName = this.toSafeString(this.user.lastName);
+    this.user.street = this.toSafeString(this.user.street);
+    this.user.zipCode = this.toSafeString(this.user.zipCode);
+    this.user.city = this.toSafeString(this.user.city);
+    
+    console.log('After sanitization:', {
+      firstName: `"${this.user.firstName}" (${typeof this.user.firstName})`,
+      lastName: `"${this.user.lastName}" (${typeof this.user.lastName})`,
+      street: `"${this.user.street}" (${typeof this.user.street})`,
+      zipCode: `"${this.user.zipCode}" (${typeof this.user.zipCode})`,
+      city: `"${this.user.city}" (${typeof this.user.city})`
+    });
+  }
+
+  // ✅ Sichere String-Konvertierung
+  private toSafeString(value: any): string {
+    if (value === null || value === undefined) {
+      return '';
+    }
+    
+    // Wenn es bereits ein String ist, zurückgeben
+    if (typeof value === 'string') {
+      return value;
+    }
+    
+    // Alles andere zu String konvertieren
+    return String(value);
+  }
+
+  // ✅ Sichere String-Validierung
+  private hasValidString(value: any): boolean {
+    // Erst zu String konvertieren, dann prüfen
+    const stringValue = this.toSafeString(value);
+    return stringValue.trim().length > 0;
   }
 
   get progressPercentage(): number {
     let filledFields = 0;
     const totalFields = 6;
 
-    // ✅ Sichere String-Prüfung mit Optional Chaining
-    if (this.user.firstName?.trim()) filledFields++;
-    if (this.user.lastName?.trim()) filledFields++;
+    if (this.hasValidString(this.user.firstName)) filledFields++;
+    if (this.hasValidString(this.user.lastName)) filledFields++;
     if (this.user.birthDate) filledFields++;
-    if (this.user.street?.trim()) filledFields++;
-    if (this.user.zipCode?.trim()) filledFields++;
-    if (this.user.city?.trim()) filledFields++;
+    if (this.hasValidString(this.user.street)) filledFields++;
+    if (this.hasValidString(this.user.zipCode)) filledFields++;
+    if (this.hasValidString(this.user.city)) filledFields++;
 
     return Math.round((filledFields / totalFields) * 100);
   }
@@ -72,13 +117,12 @@ export class DialogAddUserComponent implements OnInit {
 
   private getFilledFieldsCount(): number {
     let count = 0;
-    // ✅ Sichere String-Prüfung mit Optional Chaining
-    if (this.user.firstName?.trim()) count++;
-    if (this.user.lastName?.trim()) count++;
+    if (this.hasValidString(this.user.firstName)) count++;
+    if (this.hasValidString(this.user.lastName)) count++;
     if (this.user.birthDate) count++;
-    if (this.user.street?.trim()) count++;
-    if (this.user.zipCode?.trim()) count++;
-    if (this.user.city?.trim()) count++;
+    if (this.hasValidString(this.user.street)) count++;
+    if (this.hasValidString(this.user.zipCode)) count++;
+    if (this.hasValidString(this.user.city)) count++;
     return count;
   }
 
@@ -87,8 +131,8 @@ export class DialogAddUserComponent implements OnInit {
   }
 
   onSave(): void {
-    // ✅ Sichere Validierung
-    if (this.user.firstName?.trim() && this.user.lastName?.trim()) {
+    if (this.hasValidString(this.user.firstName) && this.hasValidString(this.user.lastName)) {
+      console.log('Saving user:', this.user);
       this.dialogRef.close(this.user);
     }
   }
