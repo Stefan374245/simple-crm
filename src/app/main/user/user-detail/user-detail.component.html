@@ -10,11 +10,11 @@
       <mat-icon>arrow_back</mat-icon>
     </button>
     <h1>User Details</h1>
-    
+
     <!-- Actions Dropdown Menu -->
     <div class="header-actions">
-      <button 
-        mat-icon-button 
+      <button
+        mat-icon-button
         [matMenuTriggerFor]="actionsMenu"
         [disabled]="!user"
         matTooltip="User Actions"
@@ -22,14 +22,23 @@
       >
         <mat-icon>more_vert</mat-icon>
       </button>
-      
-      <mat-menu #actionsMenu="matMenu" class="user-actions-menu" xPosition="before">
+
+      <mat-menu
+        #actionsMenu="matMenu"
+        class="user-actions-menu"
+        xPosition="before"
+      >
         <button mat-menu-item (click)="editUser()" [disabled]="!user">
           <mat-icon color="primary">edit</mat-icon>
           <span>Edit User</span>
         </button>
         <mat-divider></mat-divider>
-        <button mat-menu-item (click)="deleteUser()" [disabled]="!user" class="delete-menu-item">
+        <button
+          mat-menu-item
+          (click)="deleteUser()"
+          [disabled]="!user"
+          class="delete-menu-item"
+        >
           <mat-icon color="warn">delete</mat-icon>
           <span>Delete User</span>
         </button>
@@ -101,15 +110,16 @@
                 <mat-icon>person</mat-icon>
                 Basic Information
               </h3>
-              <!-- View Details Button -->
+
               <button
                 mat-button
                 (click)="toggleMoreDetails()"
                 class="view-details-button"
                 matTooltip="Show/Hide detailed information"
+                matTooltipPosition="left"
               >
                 <mat-icon>more_vert</mat-icon>
-                View Details
+                <span>View Details</span>
               </button>
             </div>
             <mat-divider></mat-divider>
