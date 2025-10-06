@@ -1,4 +1,4 @@
-@import "../../mixin/index";
+@import "../../mixin/index.scss";
 
 .sidenav-container {
   height: 100%;
@@ -19,7 +19,18 @@
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   display: flex;
   align-items: center;
-  justify-self: start;
+  justify-content: space-between;
+}
+
+.close-sidenav-btn {
+  display: none;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: $text-primary;
+    cursor: pointer;
+    transition: background $transition-normal, color $transition-normal;
+  }
 }
 
 .logo-wrapper {
@@ -48,7 +59,6 @@
   }
 }
 
-// ✅ Top Toolbar Logo
 .top-title {
   display: flex;
   align-items: center;
@@ -62,7 +72,6 @@
   }
 }
 
-// ✅ Navigation Styling
 .nav-list {
   padding-top: $spacing-lg;
 
@@ -101,7 +110,6 @@
   }
 }
 
-// ✅ Top Toolbar Styling
 mat-toolbar[color="primary"] {
   background: linear-gradient(90deg, $primary-color 0%, $primary-light 100%);
   color: $text-primary;
@@ -119,17 +127,18 @@ mat-toolbar[color="primary"] {
   }
 }
 
-// ✅ Router Content
+
 .router-content {
   height: calc(100vh - 64px);
   overflow: auto;
   background: linear-gradient(135deg, #1e1e1e 0%, #2d2d2d 100%);
 }
 
-// ✅ Responsive Design
+
 @include mobile-responsive {
   .sidenav {
-    width: 100%;
+    width: 100vw;
+    max-width: 100%;
   }
 
   .logo-wrapper {
@@ -137,8 +146,8 @@ mat-toolbar[color="primary"] {
     gap: $spacing-sm;
 
     .logo {
-      width: 40px;
-      height: 40px;
+      width: 80px;
+      height: 80px;
     }
 
     .logo-text {
@@ -155,6 +164,11 @@ mat-toolbar[color="primary"] {
     span {
       font-size: 1rem;
     }
+  }
+
+  .close-sidenav-btn {
+    display: block;
+    color: $text-primary;
   }
 }
 

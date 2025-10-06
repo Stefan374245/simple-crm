@@ -14,6 +14,7 @@ import { ConfirmDialogService } from '../../../shared/services/confirm-dialog.se
 import { User } from '../../../shared/models/user.class';
 import { DialogAddUserComponent } from '../dialog-add-user/dialog-add-user.component';
 import { Subscription } from 'rxjs';
+import { MatMenuModule } from '@angular/material/menu';
 
 @Component({
   selector: 'app-user-detail',
@@ -27,7 +28,8 @@ import { Subscription } from 'rxjs';
     MatDividerModule,
     MatChipsModule,
     MatTooltipModule,
-    MatDialogModule
+    MatDialogModule,
+    MatMenuModule
   ],
   templateUrl: './user-detail.component.html',
   styleUrl: './user-detail.component.scss'
@@ -36,6 +38,7 @@ export class UserDetailComponent implements OnInit, OnDestroy {
   user: User | null = null;
   isLoading = true;
   error = false;
+  showMoreDetails = false; // Neue Property für Dropdown-Status
   private subscription = new Subscription();
 
   constructor(
@@ -155,5 +158,12 @@ export class UserDetailComponent implements OnInit, OnDestroy {
   getStatusText(): string {
     if (!this.user) return 'Unknown';
     return this.user.isFullyValid() ? 'Complete Profile' : 'Incomplete Profile';
+  }
+
+  /**
+   * Toggles the visibility of detailed user information
+   */
+  toggleMoreDetails(): void {
+    this.showMoreDetails = !this.showMoreDetails;
   }
 }

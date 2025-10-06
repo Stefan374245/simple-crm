@@ -1,19 +1,48 @@
 <div class="user-detail-container">
   <!-- Header Section -->
   <div class="detail-header">
-    <button mat-icon-button (click)="goBack()" matTooltip="Back to Users" class="back-button">
+    <button
+      mat-icon-button
+      (click)="goBack()"
+      matTooltip="Back to Users"
+      class="back-button"
+    >
       <mat-icon>arrow_back</mat-icon>
     </button>
     <h1>User Details</h1>
+
+    <!-- Actions Dropdown Menu -->
     <div class="header-actions">
-      <button mat-button color="primary" (click)="editUser()" [disabled]="!user" matTooltip="Edit User">
-        <mat-icon>edit</mat-icon>
-        Edit
+      <button
+        mat-icon-button
+        [matMenuTriggerFor]="actionsMenu"
+        [disabled]="!user"
+        matTooltip="User Actions"
+        class="actions-menu-button"
+      >
+        <mat-icon>more_vert</mat-icon>
       </button>
-      <button mat-button color="warn" (click)="deleteUser()" [disabled]="!user" matTooltip="Delete User">
-        <mat-icon>delete</mat-icon>
-        Delete
-      </button>
+
+      <mat-menu
+        #actionsMenu="matMenu"
+        class="user-actions-menu"
+        xPosition="before"
+      >
+        <button mat-menu-item (click)="editUser()" [disabled]="!user">
+          <mat-icon color="primary">edit</mat-icon>
+          <span>Edit User</span>
+        </button>
+        <mat-divider></mat-divider>
+        <button
+          mat-menu-item
+          (click)="deleteUser()"
+          [disabled]="!user"
+          class="delete-menu-item"
+        >
+          <mat-icon color="warn">delete</mat-icon>
+          <span>Delete User</span>
+        </button>
+      </mat-menu>
     </div>
   </div>
 
@@ -37,7 +66,10 @@
         <div class="error-content">
           <mat-icon class="error-icon">error_outline</mat-icon>
           <h2>User Not Found</h2>
-          <p>The requested user could not be found or an error occurred while loading the data.</p>
+          <p>
+            The requested user could not be found or an error occurred while
+            loading the data.
+          </p>
           <button mat-raised-button color="primary" (click)="goBack()">
             <mat-icon>arrow_back</mat-icon>
             Back to Users
@@ -49,7 +81,6 @@
 
   <!-- User Detail Content -->
   <div class="user-detail-content" *ngIf="user && !isLoading && !error">
-    
     <!-- Main User Info Card -->
     <mat-card class="user-main-card">
       <mat-card-header>
@@ -60,184 +91,240 @@
         <mat-card-subtitle>
           <div class="user-status-container">
             <mat-chip [color]="getStatusColor()" selected>
-              <mat-icon>{{ user.isFullyValid() ? 'check_circle' : 'warning' }}</mat-icon>
+              <mat-icon>{{
+                user.isFullyValid() ? "check_circle" : "warning"
+              }}</mat-icon>
               {{ getStatusText() }}
             </mat-chip>
           </div>
         </mat-card-subtitle>
       </mat-card-header>
-      
-      <mat-card-content>
-        <div class="user-info-grid">
-          
-          <!-- Personal Information Section -->
-          <div class="info-section">
-            <h3 class="section-title">
-              <mat-icon>person</mat-icon>
-              Personal Information
-            </h3>
-            <mat-divider></mat-divider>
-            
-            <div class="info-row">
-              <div class="info-label">
-                <mat-icon>badge</mat-icon>
-                First Name
-              </div>
-              <div class="info-value">{{ user.firstName || 'Not provided' }}</div>
-            </div>
-            
-            <div class="info-row">
-              <div class="info-label">
-                <mat-icon>badge</mat-icon>
-                Last Name
-              </div>
-              <div class="info-value">{{ user.lastName || 'Not provided' }}</div>
-            </div>
-            
-            <div class="info-row">
-              <div class="info-label">
-                <mat-icon>cake</mat-icon>
-                Birth Date
-              </div>
-              <div class="info-value">
-                <span *ngIf="user.birthDate">
-                  {{ user.birthDate | date:'dd.MM.yyyy' }}
-                  <mat-chip class="age-chip">{{ user.getAge() }} years old</mat-chip>
-                </span>
-                <span *ngIf="!user.birthDate" class="no-data">Not provided</span>
-              </div>
-            </div>
-          </div>
 
-          <!-- Contact Information Section -->
-          <div class="info-section">
-            <h3 class="section-title">
-              <mat-icon>contact_mail</mat-icon>
-              Contact Information
-            </h3>
+      <mat-card-content>
+        <!-- Expandable User Info Grid -->
+        <div class="user-info-grid" [class.expanded]="showMoreDetails">
+          <!-- Basic Information (Always Visible) -->
+          <div class="info-section basic-info">
+            <div class="section-header">
+              <h3 class="section-title">
+                <mat-icon>person</mat-icon>
+                Basic Information
+              </h3>
+
+              <button
+                mat-button
+                (click)="toggleMoreDetails()"
+                class="view-details-button"
+                matTooltip="Show/Hide detailed information"
+                matTooltipPosition="left"
+              >
+                <mat-icon>more_vert</mat-icon>
+                <span>View Details</span>
+              </button>
+            </div>
             <mat-divider></mat-divider>
-            
+
             <div class="info-row">
+              <div class="info-label">
+                <mat-icon>badge</mat-icon>
+                Full Name
+              </div>
+              <div class="info-value">{{ user.getFullName() }}</div>
+            </div>
+
+            <div class="info-row" *ngIf="user.email">
               <div class="info-label">
                 <mat-icon>email</mat-icon>
                 Email
               </div>
               <div class="info-value">
-                <span *ngIf="user.email" class="email-link">
-                  <a [href]="'mailto:' + user.email" matTooltip="Send Email">{{ user.email }}</a>
-                  <mat-icon class="validation-icon" 
-                           [class.valid]="user.isEmailValid()" 
-                           [class.invalid]="!user.isEmailValid()">
-                    {{ user.isEmailValid() ? 'check_circle' : 'error' }}
+                <span class="email-link">
+                  <a [href]="'mailto:' + user.email" matTooltip="Send Email">{{
+                    user.email
+                  }}</a>
+                  <mat-icon
+                    class="validation-icon"
+                    [class.valid]="user.isEmailValid()"
+                    [class.invalid]="!user.isEmailValid()"
+                  >
+                    {{ user.isEmailValid() ? "check_circle" : "error" }}
                   </mat-icon>
                 </span>
-                <span *ngIf="!user.email" class="no-data">Not provided</span>
               </div>
             </div>
           </div>
 
-          <!-- Address Information Section -->
-          <div class="info-section full-width">
-            <h3 class="section-title">
-              <mat-icon>location_on</mat-icon>
-              Address Information
-            </h3>
-            <mat-divider></mat-divider>
-            
-            <div class="address-container" *ngIf="user.getFullAddress()">
+          <!-- Detailed Information (Expandable) -->
+          <div class="detailed-info" *ngIf="showMoreDetails">
+            <!-- Personal Information Section -->
+            <div class="info-section">
+              <h3 class="section-title">
+                <mat-icon>person_outline</mat-icon>
+                Personal Details
+              </h3>
+              <mat-divider></mat-divider>
+
               <div class="info-row">
                 <div class="info-label">
-                  <mat-icon>home</mat-icon>
-                  Street
+                  <mat-icon>badge</mat-icon>
+                  First Name
                 </div>
-                <div class="info-value">{{ user.street || 'Not provided' }}</div>
+                <div class="info-value">
+                  {{ user.firstName || "Not provided" }}
+                </div>
               </div>
-              
+
               <div class="info-row">
                 <div class="info-label">
-                  <mat-icon>markunread_mailbox</mat-icon>
-                  ZIP Code
+                  <mat-icon>badge</mat-icon>
+                  Last Name
                 </div>
-                <div class="info-value">{{ user.zipCode || 'Not provided' }}</div>
+                <div class="info-value">
+                  {{ user.lastName || "Not provided" }}
+                </div>
               </div>
-              
+
               <div class="info-row">
                 <div class="info-label">
-                  <mat-icon>location_city</mat-icon>
-                  City
+                  <mat-icon>cake</mat-icon>
+                  Birth Date
                 </div>
-                <div class="info-value">{{ user.city || 'Not provided' }}</div>
+                <div class="info-value">
+                  <span *ngIf="user.birthDate">
+                    {{ user.birthDate | date : "dd.MM.yyyy" }}
+                    <mat-chip class="age-chip"
+                      >{{ user.getAge() }} years old</mat-chip
+                    >
+                  </span>
+                  <span *ngIf="!user.birthDate" class="no-data"
+                    >Not provided</span
+                  >
+                </div>
               </div>
-              
-              <div class="info-row full-address">
+            </div>
+
+            <!-- Address Information Section (jetzt an zweiter Position) -->
+            <div class="info-section">
+              <h3 class="section-title">
+                <mat-icon>location_on</mat-icon>
+                Address Information
+              </h3>
+              <mat-divider></mat-divider>
+
+              <div class="address-container" *ngIf="user.getFullAddress()">
+                <div class="info-row">
+                  <div class="info-label">
+                    <mat-icon>home</mat-icon>
+                    Street
+                  </div>
+                  <div class="info-value">
+                    {{ user.street || "Not provided" }}
+                  </div>
+                </div>
+
+                <div class="info-row">
+                  <div class="info-label">
+                    <mat-icon>markunread_mailbox</mat-icon>
+                    ZIP Code
+                  </div>
+                  <div class="info-value">
+                    {{ user.zipCode || "Not provided" }}
+                  </div>
+                </div>
+
+                <div class="info-row">
+                  <div class="info-label">
+                    <mat-icon>location_city</mat-icon>
+                    City
+                  </div>
+                  <div class="info-value">
+                    {{ user.city || "Not provided" }}
+                  </div>
+                </div>
+              </div>
+
+              <div class="no-address" *ngIf="!user.getFullAddress()">
+                <mat-icon>location_off</mat-icon>
+                <span>No address information provided</span>
+              </div>
+            </div>
+
+            <!-- Additional Information Section (jetzt an dritter Position, full-width) -->
+            <div class="info-section full-width">
+              <h3 class="section-title">
+                <mat-icon>info</mat-icon>
+                Additional Information
+              </h3>
+              <mat-divider></mat-divider>
+
+              <div class="info-row">
+                <div class="info-label">
+                  <mat-icon>fingerprint</mat-icon>
+                  User ID
+                </div>
+                <div class="info-value">{{ user.id || "Not assigned" }}</div>
+              </div>
+
+              <div class="info-row">
+                <div class="info-label">
+                  <mat-icon>text_fields</mat-icon>
+                  Initials
+                </div>
+                <div class="info-value">
+                  <mat-chip class="initials-chip">{{
+                    user.getInitials()
+                  }}</mat-chip>
+                </div>
+              </div>
+
+              <div class="info-row">
+                <div class="info-label">
+                  <mat-icon>verified_user</mat-icon>
+                  Profile Status
+                </div>
+                <div class="info-value">
+                  <mat-chip
+                    [color]="user.isFullyValid() ? 'primary' : 'warn'"
+                    selected
+                  >
+                    <mat-icon>{{
+                      user.isFullyValid() ? "check_circle" : "warning"
+                    }}</mat-icon>
+                    {{
+                      user.isFullyValid()
+                        ? "Complete & Valid"
+                        : "Incomplete or Invalid"
+                    }}
+                  </mat-chip>
+                </div>
+              </div>
+
+              <div class="info-row full-address" *ngIf="user.getFullAddress()">
                 <div class="info-label">
                   <mat-icon>map</mat-icon>
                   Full Address
                 </div>
                 <div class="info-value">
-                  <div class="address-highlight">{{ user.getFullAddress() }}</div>
+                  <div class="address-highlight">
+                    {{ user.getFullAddress() }}
+                  </div>
                 </div>
-              </div>
-            </div>
-            
-            <div class="no-address" *ngIf="!user.getFullAddress()">
-              <mat-icon>location_off</mat-icon>
-              <span>No address information provided</span>
-            </div>
-          </div>
-
-          <!-- Additional Information Section -->
-          <div class="info-section full-width">
-            <h3 class="section-title">
-              <mat-icon>info</mat-icon>
-              Additional Information
-            </h3>
-            <mat-divider></mat-divider>
-            
-            <div class="info-row">
-              <div class="info-label">
-                <mat-icon>fingerprint</mat-icon>
-                User ID
-              </div>
-              <div class="info-value">{{ user.id || 'Not assigned' }}</div>
-            </div>
-            
-            <div class="info-row">
-              <div class="info-label">
-                <mat-icon>text_fields</mat-icon>
-                Initials
-              </div>
-              <div class="info-value">
-                <mat-chip class="initials-chip">{{ user.getInitials() }}</mat-chip>
-              </div>
-            </div>
-            
-            <div class="info-row">
-              <div class="info-label">
-                <mat-icon>verified_user</mat-icon>
-                Profile Status
-              </div>
-              <div class="info-value">
-                <mat-chip [color]="user.isFullyValid() ? 'primary' : 'warn'" selected>
-                  <mat-icon>{{ user.isFullyValid() ? 'check_circle' : 'warning' }}</mat-icon>
-                  {{ user.isFullyValid() ? 'Complete & Valid' : 'Incomplete or Invalid' }}
-                </mat-chip>
               </div>
             </div>
           </div>
         </div>
       </mat-card-content>
-      
+
       <mat-card-actions class="card-actions">
-        <button mat-raised-button color="primary" (click)="editUser()">
-          <mat-icon>edit</mat-icon>
-          Edit User
-        </button>
-        <button mat-button (click)="goBack()">
+        <button mat-button (click)="goBack()" class="back-button">
           <mat-icon>arrow_back</mat-icon>
           Back to List
         </button>
-        <button mat-button color="warn" (click)="deleteUser()">
+        <button mat-button (click)="editUser()" class="edit-button">
+          <mat-icon>edit</mat-icon>
+          Edit User
+        </button>
+        <button mat-button (click)="deleteUser()" class="delete-button">
           <mat-icon>delete</mat-icon>
           Delete User
         </button>

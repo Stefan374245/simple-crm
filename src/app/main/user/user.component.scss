@@ -30,8 +30,8 @@
 
 .add-user-btn {
   position: fixed;
-  bottom: $spacing-lg;
-  right: $spacing-lg;
+  bottom: $spacing-md;
+  right: $spacing-xl;
   z-index: 100;
   width: 56px;
   height: 56px;
@@ -66,6 +66,10 @@
   border: 1px solid rgba(255, 255, 255, 0.12);
   backdrop-filter: blur(10px);
   transition: all $transition-normal;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 
   &:hover {
     background: rgba(255, 255, 255, 0.12);
@@ -74,13 +78,22 @@
     box-shadow: $shadow-medium;
   }
 
+  mat-card-content {
+    flex: 1;
+    padding: $spacing-md;
+    overflow: hidden;
+  }
+
   .user-content {
     @include user-content-layout;
+    width: 100%;
+    min-width: 0;
   }
 
   .user-avatar-container {
     position: relative;
-    margin-top: 24px;
+    margin-top: 0;
+    flex-shrink: 0;
 
     .user-avatar {
       width: 64px;
@@ -118,6 +131,9 @@
 
   .user-info {
     @include user-info-section;
+    flex: 1;
+    min-width: 0; // Ermöglicht Text-Truncation
+    overflow: hidden;
 
     h3 {
       margin: 0 0 $spacing-lg 0;
@@ -125,6 +141,8 @@
       font-size: 1.5rem;
       font-weight: 500;
       line-height: 1.2;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
     }
 
     .user-details {
@@ -134,31 +152,53 @@
         color: $text-secondary;
         font-size: 1rem;
         margin: $spacing-xs 0;
+        display: flex;
+        align-items: center;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        min-width: 0;
 
         mat-icon {
           font-size: 16px;
           width: 16px;
           height: 16px;
           margin-right: $spacing-xs;
+          flex-shrink: 0; // Icons sollen nicht schrumpfen
         }
       }
 
-      mat-icon {
-        font-size: 14px;
-        width: 14px;
-        height: 14px;
-        margin-right: $spacing-xs;
-        color: $text-divider;
+      // Text sollte umbrechen wenn er zu lang ist
+      p {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        word-break: break-word;
+        hyphens: auto;
       }
     }
   }
 
-  mat-card_actions {
+  mat-card-actions {
     @include action-buttons;
     display: flex;
     gap: $spacing-sm;
-    padding-top: $spacing-md;
+    padding: $spacing-md;
     border-top: 1px solid $text-divider;
+    flex-shrink: 0; // Actions sollen nicht schrumpfen
+
+    .view-btn {
+      color: $text-secondary;
+      flex: 1;
+      min-width: 0;
+
+      &:hover {
+        color: $primary-color;
+        background: rgba(103, 58, 183, 0.1);
+      }
+
+      mat-icon {
+        margin-right: $spacing-xs;
+      }
+    }
 
     .edit-btn {
       color: $text-secondary;
@@ -238,7 +278,6 @@
   }
 }
 
-// Responsive Design
 @include mobile-responsive {
   .user-container {
     padding: $spacing-md;
@@ -246,17 +285,31 @@
 
   .users-grid {
     grid-template-columns: 1fr;
-  }
-
-  .add-user-btn {
-    bottom: $spacing-md;
-    right: $spacing-md;
-  }
-
-  .user-card .user-content {
-    flex-direction: column;
-    text-align: center;
     gap: $spacing-md;
+  }
+
+  .user-card {
+    .user-content {
+      flex-direction: column;
+      text-align: center;
+      gap: $spacing-md;
+    }
+
+    .user-info {
+      text-align: center;
+
+      .user-details {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        
+        .user-age,
+        .user-address,
+        .user-email {
+          justify-content: center;
+        }
+      }
+    }
   }
 }
 
@@ -266,12 +319,17 @@
   }
 
   .users-grid {
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: $spacing-md;
   }
 }
 
 @include desktop-responsive {
   .user-container {
     padding: $spacing-lg;
+  }
+
+  .users-grid {
+    gap: $spacing-lg;
   }
 }

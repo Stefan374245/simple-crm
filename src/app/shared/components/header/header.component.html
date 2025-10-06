@@ -1,20 +1,42 @@
 <mat-sidenav-container class="sidenav-container">
-  <mat-sidenav #drawer class="sidenav" fixedInViewport
-      [attr.role]="'dialog'"
-      mode="side"
-      [opened]="true">
+  <mat-sidenav
+    #drawer
+    class="sidenav"
+    fixedInViewport
+    [attr.role]="'dialog'"
+    mode="side"
+    [opened]="isSidenavOpen"
+  >
     <mat-toolbar class="logo-container">
       <div class="logo-wrapper">
-        <img src="img/crm-logo.png" alt="Simple CRM Logo" class="logo">
-
+        <img src="img/crm-logo.png" alt="Simple CRM Logo" class="logo" />
       </div>
+      <button
+        type="button"
+        aria-label="Close sidenav"
+        mat-icon-button
+        class="close-sidenav-btn"
+        (click)="drawer.close()"
+      >
+        <mat-icon>menu</mat-icon>
+      </button>
     </mat-toolbar>
     <mat-nav-list class="nav-list">
-      <a mat-list-item routerLink="/dashboard" routerLinkActive="active">
+      <a 
+        mat-list-item 
+        routerLink="/dashboard" 
+        routerLinkActive="active"
+        (click)="onNavLinkClick()"
+      >
         <mat-icon matListItemIcon>home</mat-icon>
         <span matListItemTitle>Dashboard</span>
       </a>
-      <a mat-list-item routerLink="/user" routerLinkActive="active">
+      <a 
+        mat-list-item 
+        routerLink="/user" 
+        routerLinkActive="active"
+        (click)="onNavLinkClick()"
+      >
         <mat-icon matListItemIcon>people</mat-icon>
         <span matListItemTitle>User</span>
       </a>
@@ -27,14 +49,15 @@
         type="button"
         aria-label="Toggle sidenav"
         mat-icon-button
-        (click)="drawer.toggle()">
+        (click)="drawer.toggle()"
+      >
         <mat-icon>menu</mat-icon>
       </button>
       <div class="top-title">
         <span>Simple CRM</span>
       </div>
     </mat-toolbar>
-    
+
     <div class="router-content">
       <ng-content></ng-content>
     </div>
