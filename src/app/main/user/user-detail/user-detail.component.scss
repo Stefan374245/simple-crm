@@ -44,18 +44,65 @@
 
   .header-actions {
     display: flex;
-    gap: $spacing-sm;
+    align-items: center;
     
-    button {
-      border-radius: $border-radius-md;
-      font-weight: 500;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
+    .actions-menu-button {
+      background: rgba(255, 255, 255, 0.08);
+      color: $primary-color;
+      border: 1px solid rgba(255, 255, 255, 0.12);
       transition: all $transition-normal;
       
       &:hover {
-        transform: translateY(-1px);
+        background: rgba(255, 255, 255, 0.12);
+        border-color: $primary-color;
+        transform: scale(1.05);
       }
+      
+      &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+    }
+  }
+}
+
+// Menu Styling
+::ng-deep .user-actions-menu {
+  .mat-mdc-menu-panel {
+    background: rgba(30, 30, 30, 0.95);
+    backdrop-filter: blur(10px);
+    min-width: 180px;
+  }
+
+  .mat-mdc-menu-item {
+    color: $text-primary;
+    transition: all $transition-fast;
+  
+    
+    &.delete-menu-item {
+      &:hover {
+        background: rgba($error-color, 0.1);
+        
+        mat-icon {
+          color: $error-color !important;
+        }
+        
+        span {
+          color: $error-color;
+        }
+      }
+    }
+    
+    mat-icon {
+      margin-right: $spacing-sm;
+      font-size: 20px;
+      width: 20px;
+      height: 20px;
+    }
+    
+    span {
+      font-weight: 500;
+      font-size: 0.95rem;
     }
   }
 }
@@ -142,23 +189,35 @@
   }
 }
 
-// User Info Grid
-.user-info-grid {
-  @include grid-layout(300px);
-  padding: $spacing-xl;
-  gap: $spacing-xl;
-}
-
 // Info Sections
 .info-section {
   &.full-width {
     grid-column: 1 / -1;
+    background: rgba(255, 255, 255, 0.03);
+    padding: $spacing-lg;
+    border-radius: $border-radius-md;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  &.basic-info {
+    background: rgba(255, 255, 255, 0.03);
+    padding: $spacing-lg;
+    border-radius: $border-radius-md;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  // Section Header mit Titel und Button
+  .section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: $spacing-md;
   }
 
   .section-title {
     @include section-title;
     font-size: 1.25rem;
-    margin-bottom: $spacing-md;
+    margin: 0;
     
     mat-icon {
       font-size: 24px;
@@ -173,10 +232,49 @@
   }
 }
 
+// User Info Grid
+.user-info-grid {
+  @include grid-layout(300px);
+  padding: 0;
+  gap: $spacing-xl;
+  max-height: 300px;
+  overflow: hidden;
+  transition: all $transition-normal ease-in-out;
+
+  &.expanded {
+    max-height: none;
+    overflow: visible;
+  }
+
+  .basic-info {
+    grid-column: 1 / -1;
+  }
+
+  .detailed-info {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: $spacing-xl;
+    animation: fadeInUp 0.3s ease-out;
+  }
+}
+
+// Animation for expanding content
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 // Info Rows
 .info-row {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   gap: $spacing-md;
   margin-bottom: $spacing-md;
   padding: $spacing-sm 0;
@@ -260,6 +358,7 @@
       color: $success-color;
       border-radius: $border-radius-lg;
       padding: 4px $spacing-xs;
+      margin-left: $spacing-xl;
     }
 
     .initials-chip {
@@ -302,46 +401,88 @@
   border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-// Card Actions
-.card-actions {
-  @include action-buttons;
-  padding: $spacing-md $spacing-xl;
-  background: rgba(255, 255, 255, 0.02);
-  border-top: 1px solid rgba(255, 255, 255, 0.05);
-  justify-content: flex-start;
-
+// Konsistente Button-Styles für das gesamte User Detail
+mat-card-actions,
+.card-actions,
+.view-details-button {
   button {
+    color: $primary-color !important;
+    background: transparent !important;
+    border: 1px solid rgba($primary-color, 0.3) !important;
     border-radius: $border-radius-md;
+    padding: $spacing-xs $spacing-md;
     font-weight: 500;
     text-transform: uppercase;
     letter-spacing: 0.5px;
     transition: all $transition-normal;
-    padding: $spacing-xs $spacing-md;
     
-    &:hover {
+    &:hover:not([disabled]) {
+      background: rgba($primary-color, 0.1) !important;
+      border-color: $primary-color !important;
+      color: $primary-light !important;
       transform: translateY(-1px);
     }
-
-    &[color="primary"] {
-      background: linear-gradient(135deg, $primary-color, $primary-light);
-      color: $text-primary;
+    
+    &[disabled] {
+      color: $text-disabled !important;
+      border-color: rgba(255, 255, 255, 0.12) !important;
+      cursor: not-allowed;
       
       &:hover {
-        background: linear-gradient(135deg, $primary-light, $primary-color);
+        transform: none;
+      }
+    }
+    
+    // Spezielle Farben für unterschiedliche Button-Typen
+    &.accent-button {
+      color: $accent-color !important;
+      border-color: rgba($accent-color, 0.3) !important;
+      
+      &:hover:not([disabled]) {
+        background: rgba($accent-color, 0.1) !important;
+        border-color: $accent-color !important;
+        color: $accent-light !important;
+      }
+    }
+    
+    &.success-button {
+      color: $success-color !important;
+      border-color: rgba($success-color, 0.3) !important;
+      
+      &:hover:not([disabled]) {
+        background: rgba($success-color, 0.1) !important;
+        border-color: $success-color !important;
+        color: $success-light !important;
       }
     }
 
-    &[color="warn"] {
-      color: $error-color;
+    // Spezielle Styling für Delete/Warning Buttons
+    &.delete-button {
+      color: $error-color !important;
+      border-color: rgba($error-color, 0.3) !important;
       
-      &:hover {
-        background: rgba($error-color, 0.1);
+      &:hover:not([disabled]) {
+        background: rgba($error-color, 0.1) !important;
+        border-color: $error-color !important;
+        color: $error-color !important;
       }
     }
-
+    
     mat-icon {
       margin-right: $spacing-xs;
+      font-size: 18px;
+      width: 18px;
+      height: 18px;
     }
+  }
+
+  // Spezifische Styles für verschiedene Container
+  &.card-actions {
+    padding: $spacing-md $spacing-xl;
+    background: rgba(255, 255, 255, 0.02);
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    justify-content: flex-end;
+    gap: $spacing-xxl;
   }
 }
 
@@ -370,13 +511,22 @@ mat-chip {
   }
 
   .detail-header {
-    flex-direction: column;
-    align-items: flex-start;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
     gap: $spacing-sm;
 
+    h1 {
+      font-size: 1.75rem;
+      flex: 1;
+    }
+
     .header-actions {
-      width: 100%;
-      justify-content: flex-start;
+      .actions-menu-button {
+        padding: $spacing-xs;
+        min-width: 40px;
+        height: 40px;
+      }
     }
   }
 
@@ -396,8 +546,12 @@ mat-chip {
 
   .user-info-grid {
     @include grid-layout(100%);
-    padding: $spacing-lg;
+    padding: 0;
     gap: $spacing-lg;
+
+    .detailed-info {
+      grid-template-columns: 1fr;
+    }
   }
 
   .info-row {
@@ -425,12 +579,20 @@ mat-chip {
   }
 
   .user-info-grid {
-    @include grid-layout(280px);
+    .detailed-info {
+      grid-template-columns: 1fr;
+    }
   }
 }
 
 @include desktop-responsive {
   .user-detail-container {
     padding: $spacing-lg 24px;
+  }
+  
+  .user-info-grid {
+    .detailed-info {
+      grid-template-columns: 1fr 1fr;
+    }
   }
 }
